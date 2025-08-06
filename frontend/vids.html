@@ -1,0 +1,76 @@
+<!-- frontend/vids.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="index.html">Home</a>
+      <a href="audios.html">Audio</a>
+      <a href="vids.html" class="active">Video</a>
+      <a href="ebooks.html">E-Books</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="events.html">Events</a>
+    </nav>
+
+    <h1>Video</h1>
+
+    <!-- Video Grid -->
+    <div class="grid" id="videoGrid"></div>
+
+    <!-- Pagination Buttons -->
+    <div class="pagination">
+      <button id="prevBtn">Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+
+    <script>
+      const playlistId = "PLEPUNw4tYLWXESnlHMz1nbqAtvHU75yim";
+      const maxResults = 6;
+      let nextPageToken = "";
+      let prevPageToken = "";
+
+      async function loadVideos(pageToken = "") {
+        const res = await fetch(
+          `/api/videos?playlistId=${playlistId}&pageToken=${pageToken}`
+        );
+        const data = await res.json();
+
+        const grid = document.getElementById("videoGrid");
+        grid.innerHTML = "";
+
+        data.items.forEach((item) => {
+          const videoId = item.snippet.resourceId.videoId;
+          const title = item.snippet.title;
+
+          const div = document.createElement("div");
+          div.className = "grid-item";
+          div.innerHTML = `
+            <iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+            <p>${title}</p>
+          `;
+          grid.appendChild(div);
+        });
+
+        nextPageToken = data.nextPageToken || "";
+        prevPageToken = data.prevPageToken || "";
+
+        document.getElementById("prevBtn").disabled = !prevPageToken;
+        document.getElementById("nextBtn").disabled = !nextPageToken;
+      }
+
+      document.getElementById("nextBtn").onclick = () =>
+        loadVideos(nextPageToken);
+      document.getElementById("prevBtn").onclick = () =>
+        loadVideos(prevPageToken);
+
+      // Initial load
+      loadVideos();
+    </script>
+  </body>
+</html>

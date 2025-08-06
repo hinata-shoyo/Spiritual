@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Playlist</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+
+      .navbar {
+        background-color: #333;
+        overflow: hidden;
+        padding: 10px 0;
+      }
+
+      .nav-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        max-width: 1000px;
+        margin: auto;
+      }
+
+      .nav-content a {
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .nav-content a:hover {
+        background-color: #575757;
+        border-radius: 4px;
+      }
+
+      .logo-container img {
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1000px;
+        margin: auto;
+      }
+
+      .video-item iframe {
+        width: 100%;
+        height: 200px;
+        border: none;
+      }
+
+      .pagination {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .pagination button {
+        padding: 10px 20px;
+        margin: 0 5px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .pagination button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <div class="navbar">
+  <div class="nav-content">
+    <a href="index.html">Home</a>
+    <a href="audio.html">Audio</a>
+    <a href="video.html">Video</a>
+    <div class="logo-container">
+      <img src="path/to/logo.jpg" alt="Logo" />
+    </div>
+    <a href="ebooks.html">E-Books</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="events.html">Events</a>
+  </div>
+</div>
+
+
+    <h1>Videos</h1>
+    <div class="video-grid" id="videoGrid"></div>
+
+    <div class="pagination">
+      <button id="prevBtn" disabled>Previous</button>
+      <button id="nextBtn" disabled>Next</button>
+    </div>
+
+    <script>
+      const playlistId = "PLEPUNw4tYLWXESnlHMz1nbqAtvHU75yim";
+      let nextPageToken = "";
+      let prevPageToken = "";
+
+      async function fetchVideos(pageToken = "") {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/videos?playlistId=${playlistId}&pageToken=${pageToken}`
+          );
+          const data = await response.json();
+
+          const videoGrid = document.getElementById("videoGrid");
+          videoGrid.innerHTML = "";
+
+          data.items.forEach((item) => {
+            const videoId = item.snippet.resourceId.videoId;
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.allow =
+              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+
+            const div = document.createElement("div");
+            div.className = "video-item";
+            div.appendChild(iframe);
+            videoGrid.appendChild(div);
+          });
+
+          nextPageToken = data.nextPageToken || "";
+          prevPageToken = data.prevPageToken || "";
+
+          document.getElementById("prevBtn").disabled = !prevPageToken;
+          document.getElementById("nextBtn").disabled = !nextPageToken;
+        } catch (err) {
+          console.error("Failed to fetch videos:", err);
+        }
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        fetchVideos(prevPageToken);
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        fetchVideos(nextPageToken);
+      });
+
+      // Load first page
+      fetchVideos();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Books</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-content">
+        <a href="index.html">Home</a>
+        <a href="#">Audio</a>
+        <a href="vids.html">Video</a>
+
+        <div class="logo-container">
+          <img src="img_3.jpg" alt="Logo" />
+        </div>
+        <a href="books.html">E-Books</a>
+        <a href="#">Gallery</a>
+        <a href="#">Events</a>
+      </div>
+    </nav>
+
+    <!-- 📚 Book Thumbnails -->
+    <div class="books-container">
+      <div
+        class="book"
+        onclick="openBook('https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview')"
+      >
+        <!-- <img
+          src="https://drive.google.com/uc?export=view&id=YOUR_FILE_ID"
+          alt="Book Cover"
+        /> -->
+
+        <h3>Book 1</h3>
+      </div>
+
+      <div
+        class="book"
+        onclick="openBook('https://drive.google.com/file/d/1MmDpD2yMqVfA-jSpJBHuOhYg9N0TNA7l/preview')"
+      >
+        <h3>Book 2</h3>
+      </div>
+
+      <div
+        class="book"
+        onclick="openBook('https://drive.google.com/file/d/1Pu9O95OR1jhq_3GA5jwX6kJKi0Tg9ATP/preview')"
+      >
+        <h3>Book 3</h3>
+      </div>
+
+      <div
+        class="book"
+        onclick="openBook('https://drive.google.com/file/d/1L2M9wQsLpluNcp__rXsN2SBhny8i7agv/preview')"
+      >
+        <h3>Book 4</h3>
+      </div>
+
+      <div
+        class="book"
+        onclick="openBook('https://drive.google.com/file/d/1S5YPFnFfxFS06LVuhzDd2-QNXxRwmM_v/preview')"
+      >
+        <h3>Book 5</h3>
+      </div>
+    </div>
+
+    <!-- 📖 Book Viewer -->
+    <iframe id="bookViewer" src="" allowfullscreen></iframe>
+
+    <script>
+      function openBook(link, element) {
+        document.getElementById("bookViewer").src = link;
+
+        // Remove 'active' class from all books
+        document
+          .querySelectorAll(".book")
+          .forEach((book) => book.classList.remove("active"));
+
+        // Add 'active' class to the clicked book
+        element.classList.add("active");
+      }
+
+      // Update event listeners for all book elements
+      document.querySelectorAll(".book").forEach((book) => {
+        const link = book.getAttribute("onclick").match(/'(.*?)'/)[1];
+        book.removeAttribute("onclick");
+        book.addEventListener("click", () => openBook(link, book));
+      });
+    </script>
+  </body>
+</html>
