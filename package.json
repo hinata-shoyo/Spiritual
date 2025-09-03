@@ -1,1 +1,27 @@
-{}
+{
+  "name": "guruji-website",
+  "version": "1.0.0",
+  "description": "A spiritual website featuring videos, audios, e-books, photo gallery, and events",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "install-deps": "cd backend && npm install",
+    "build": "echo 'No build step required for this project'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "spiritual",
+    "website",
+    "youtube",
+    "cloudinary",
+    "nodejs",
+    "express"
+  ],
+  "author": "Guruji Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

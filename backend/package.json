@@ -1,19 +1,31 @@
 {
-  "name": "backend",
+  "name": "guruji-website-backend",
   "version": "1.0.0",
+  "description": "Backend API for Guruji Website",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.53.0",
-    "axios": "^1.6.0",
+    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.0",
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "guruji",
+    "website",
+    "api",
+    "backend"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }

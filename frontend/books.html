@@ -3,89 +3,258 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Books</title>
+    <title>E-Books - Guruji</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .books-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .books-header {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #3c1a35;
+      }
+
+      .books-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #3c1a35;
+      }
+
+      .books-header p {
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .books-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .book {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 5px solid #3c1a35;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+      }
+
+      .book:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .book.active {
+        border-left: 5px solid #ffd8e1;
+        background: #fff6ef;
+      }
+
+      .book h3 {
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #3c1a35;
+        margin: 0;
+      }
+
+      .book-icon {
+        font-size: 3em;
+        margin-bottom: 15px;
+        color: #3c1a35;
+      }
+
+      .book-viewer {
+        width: 100%;
+        height: 600px;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      .no-book-selected {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        font-size: 1.2em;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Mobile Responsive Design */
+      @media (max-width: 1024px) {
+        .books-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .books-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .books-header h1 {
+          font-size: 2em;
+        }
+
+        .books-container {
+          padding: 20px 15px;
+        }
+
+        .book {
+          padding: 20px;
+        }
+
+        .book-viewer {
+          height: 400px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .books-header h1 {
+          font-size: 1.8em;
+        }
+
+        .books-header p {
+          font-size: 1em;
+        }
+
+        .book h3 {
+          font-size: 1.2em;
+        }
+
+        .book-icon {
+          font-size: 2.5em;
+        }
+
+        .book-viewer {
+          height: 300px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Main navbar -->
     <nav class="navbar">
       <div class="nav-content">
         <a href="index.html">Home</a>
-        <a href="#">Audio</a>
+        <a href="audios.html">Audio</a>
         <a href="vids.html">Video</a>
 
         <div class="logo-container">
           <img src="img_3.jpg" alt="Logo" />
         </div>
-        <a href="books.html">E-Books</a>
-        <a href="#">Gallery</a>
-        <a href="#">Events</a>
+        <a href="books.html" style="color: #ffffff; text-decoration: underline"
+          >E-Books</a
+        >
+        <a href="gallery.html">Gallery</a>
+        <a href="events.html">Events</a>
       </div>
     </nav>
 
-    <!-- 📚 Book Thumbnails -->
     <div class="books-container">
-      <div
-        class="book"
-        onclick="openBook('https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview')"
-      >
-        <!-- <img
-          src="https://drive.google.com/uc?export=view&id=YOUR_FILE_ID"
-          alt="Book Cover"
-        /> -->
-
-        <h3>Book 1</h3>
+      <div class="books-header">
+        <h1>Spiritual E-Books</h1>
+        <p>Read enlightening spiritual texts and sacred scriptures</p>
       </div>
 
-      <div
-        class="book"
-        onclick="openBook('https://drive.google.com/file/d/1MmDpD2yMqVfA-jSpJBHuOhYg9N0TNA7l/preview')"
-      >
-        <h3>Book 2</h3>
+      <!-- 📚 Book Thumbnails (keep real links) -->
+      <div class="books-grid">
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview"
+        >
+          <div class="book-icon">📖</div>
+          <h3>Book 1</h3>
+        </a>
+
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1MmDpD2yMqVfA-jSpJBHuOhYg9N0TNA7l/preview"
+        >
+          <div class="book-icon">🕉️</div>
+          <h3>Book 2</h3>
+        </a>
+
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1Pu9O95OR1jhq_3GA5jwX6kJKi0Tg9ATP/preview"
+        >
+          <div class="book-icon">🧘</div>
+          <h3>Book 3</h3>
+        </a>
+
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1L2M9wQsLpluNcp__rXsN2SBhny8i7agv/preview"
+        >
+          <div class="book-icon">🙏</div>
+          <h3>Book 4</h3>
+        </a>
+
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1S5YPFnFfxFS06LVuhzDd2-QNXxRwmM_v/preview"
+        >
+          <div class="book-icon">🌟</div>
+          <h3>Book 5</h3>
+        </a>
+
+        <a
+          class="book"
+          href="https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview"
+        >
+          <div class="book-icon">📚</div>
+          <h3>Book 6</h3>
+        </a>
       </div>
 
-      <div
-        class="book"
-        onclick="openBook('https://drive.google.com/file/d/1Pu9O95OR1jhq_3GA5jwX6kJKi0Tg9ATP/preview')"
-      >
-        <h3>Book 3</h3>
-      </div>
-
-      <div
-        class="book"
-        onclick="openBook('https://drive.google.com/file/d/1L2M9wQsLpluNcp__rXsN2SBhny8i7agv/preview')"
-      >
-        <h3>Book 4</h3>
-      </div>
-
-      <div
-        class="book"
-        onclick="openBook('https://drive.google.com/file/d/1S5YPFnFfxFS06LVuhzDd2-QNXxRwmM_v/preview')"
-      >
-        <h3>Book 5</h3>
-      </div>
+      <!-- 📖 Book Viewer (open in page) -->
+      <iframe
+        id="bookViewer"
+        class="book-viewer"
+        src=""
+        allowfullscreen
+      ></iframe>
     </div>
 
-    <!-- 📖 Book Viewer -->
-    <iframe id="bookViewer" src="" allowfullscreen></iframe>
+    <footer class="contact-bar">
+      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
+      <p>Phone: +91-12345-67890</p>
+    </footer>
 
     <script>
       function openBook(link, element) {
+        // Open inside the iframe
         document.getElementById("bookViewer").src = link;
 
-        // Remove 'active' class from all books
+        // Update active state
         document
           .querySelectorAll(".book")
           .forEach((book) => book.classList.remove("active"));
-
-        // Add 'active' class to the clicked book
-        element.classList.add("active");
+        if (element) {
+          element.classList.add("active");
+        }
       }
 
-      // Update event listeners for all book elements
+      // Intercept clicks on real links to open in viewer instead of navigating away
       document.querySelectorAll(".book").forEach((book) => {
-        const link = book.getAttribute("onclick").match(/'(.*?)'/)[1];
-        book.removeAttribute("onclick");
-        book.addEventListener("click", () => openBook(link, book));
+        book.addEventListener("click", (e) => {
+          const link = book.getAttribute("href");
+          if (link) {
+            e.preventDefault();
+            openBook(link, book);
+          }
+        });
       });
     </script>
   </body>

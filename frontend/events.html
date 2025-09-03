@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events - Guruji</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .events-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .events-header {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #3c1a35;
+      }
+
+      .events-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #3c1a35;
+      }
+
+      .events-header p {
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .events-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .event-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 5px solid #3c1a35;
+      }
+
+      .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .event-date {
+        background: #3c1a35;
+        color: #ffd8e1;
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        font-weight: bold;
+        margin-bottom: 15px;
+        font-size: 0.9em;
+      }
+
+      .event-title {
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #3c1a35;
+        margin-bottom: 10px;
+      }
+
+      .event-description {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+
+      .event-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .event-time {
+        color: #3c1a35;
+        font-weight: bold;
+      }
+
+      .event-location {
+        color: #666;
+        font-style: italic;
+      }
+
+      .event-status {
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .status-upcoming {
+        background: #e8f5e8;
+        color: #2d5a2d;
+      }
+
+      .status-ongoing {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .status-completed {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .no-events {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        font-size: 1.2em;
+      }
+
+      .no-events h3 {
+        color: #3c1a35;
+        margin-bottom: 15px;
+      }
+
+      /* Mobile Responsive Design */
+      @media (max-width: 1024px) {
+        .events-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .events-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .events-header h1 {
+          font-size: 2em;
+        }
+
+        .events-container {
+          padding: 20px 15px;
+        }
+
+        .event-card {
+          padding: 20px;
+        }
+
+        .event-details {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .events-header h1 {
+          font-size: 1.8em;
+        }
+
+        .events-header p {
+          font-size: 1em;
+        }
+
+        .event-title {
+          font-size: 1.2em;
+        }
+
+        .event-card {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Main navbar -->
+    <nav class="navbar">
+      <div class="nav-content">
+        <a href="index.html">Home</a>
+        <a href="audios.html">Audio</a>
+        <a href="vids.html">Video</a>
+
+        <div class="logo-container">
+          <img src="img_3.jpg" alt="Logo" />
+        </div>
+        <a href="books.html">E-Books</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="events.html" style="color: #ffffff; text-decoration: underline"
+          >Events</a
+        >
+      </div>
+    </nav>
+
+    <div class="events-container">
+      <div class="events-header">
+        <h1>Upcoming Events</h1>
+        <p>
+          Join us for spiritual discourses, meditation sessions, and community
+          gatherings
+        </p>
+      </div>
+
+      <div class="events-grid">
+        <!-- Event 1 -->
+        <div class="event-card">
+          <div class="event-date">December 15, 2024</div>
+          <div class="event-title">
+            Spiritual Discourse - "The Path to Inner Peace"
+          </div>
+          <div class="event-description">
+            Join us for an enlightening discourse on finding inner peace through
+            meditation and spiritual practices. This session will include guided
+            meditation and Q&A session.
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 6:00 PM - 8:00 PM</div>
+              <div class="event-location">📍 Main Meditation Hall</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="event-card">
+          <div class="event-date">December 20, 2024</div>
+          <div class="event-title">
+            Bhajan Sandhya - Evening Devotional Songs
+          </div>
+          <div class="event-description">
+            Experience the divine through soulful bhajans and devotional songs.
+            Open to all devotees. Please bring your own musical instruments if
+            you wish to participate.
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 7:00 PM - 9:00 PM</div>
+              <div class="event-location">📍 Prayer Hall</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="event-card">
+          <div class="event-date">December 25, 2024</div>
+          <div class="event-title">Christmas Special - Community Service</div>
+          <div class="event-description">
+            Celebrate the spirit of giving through community service. We'll be
+            distributing food and warm clothes to the needy. Volunteers welcome!
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 10:00 AM - 2:00 PM</div>
+              <div class="event-location">📍 Community Center</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="event-card">
+          <div class="event-date">December 30, 2024</div>
+          <div class="event-title">New Year Meditation Retreat</div>
+          <div class="event-description">
+            Start the new year with peace and clarity through our special
+            meditation retreat. Includes silent meditation, spiritual talks, and
+            group discussions.
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 9:00 AM - 5:00 PM</div>
+              <div class="event-location">📍 Retreat Center</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="event-card">
+          <div class="event-date">January 5, 2025</div>
+          <div class="event-title">
+            Weekly Satsang - "Living with Awareness"
+          </div>
+          <div class="event-description">
+            Regular weekly satsang focusing on practical spirituality and
+            mindful living. Open discussion format with spiritual guidance.
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 5:00 PM - 6:30 PM</div>
+              <div class="event-location">📍 Meditation Room</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- Event 6 -->
+        <div class="event-card">
+          <div class="event-date">January 12, 2025</div>
+          <div class="event-title">Yoga and Pranayama Workshop</div>
+          <div class="event-description">
+            Learn traditional yoga asanas and breathing techniques for physical
+            and mental well-being. Suitable for all levels. Please bring your
+            own yoga mat.
+          </div>
+          <div class="event-details">
+            <div>
+              <div class="event-time">⏰ 7:00 AM - 9:00 AM</div>
+              <div class="event-location">📍 Yoga Hall</div>
+            </div>
+            <span class="event-status status-upcoming">Upcoming</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="contact-bar">
+      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
+      <p>Phone: +91-12345-67890</p>
+    </footer>
+  </body>
+</html>

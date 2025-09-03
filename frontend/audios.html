@@ -3,156 +3,559 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video Playlist</title>
+    <title>Spiritual Audios - Guruji</title>
+    <link rel="stylesheet" href="style.css" />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
+      .audios-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
       }
 
-      .navbar {
-        background-color: #333;
-        overflow: hidden;
-        padding: 10px 0;
+      .audios-header {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #3c1a35;
       }
 
-      .nav-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        max-width: 1000px;
-        margin: auto;
+      .audios-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #3c1a35;
       }
 
-      .nav-content a {
+      .audios-header p {
+        font-size: 1.2em;
+        color: #666;
+      }
+
+      .collection-info {
+        background: linear-gradient(135deg, #3c1a35 0%, #5a2a4a 100%);
         color: white;
-        padding: 14px 16px;
-        text-decoration: none;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .collection-info h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.3em;
+      }
+
+      .collection-info p {
+        margin: 0;
+        opacity: 0.9;
+      }
+
+      .search-container {
+        max-width: 600px;
+        margin: 0 auto 30px;
+        position: relative;
+      }
+
+      .search-container input {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #3c1a35;
+        border-radius: 25px;
+        font-size: 1em;
+        outline: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      .search-container input:focus {
+        box-shadow: 0 0 15px rgba(60, 26, 53, 0.3);
+        border-color: #5a2a4a;
+      }
+
+      .stats-container {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #666;
+        font-size: 1.1em;
+      }
+
+      .audios-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .audio-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-left: 5px solid #3c1a35;
+      }
+
+      .audio-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .audio-player-container {
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      .audio-player {
+        width: 100%;
+        height: 36px;
+        outline: none;
+      }
+
+      .audio-info {
+        margin-bottom: 15px;
+      }
+
+      .audio-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #3c1a35;
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+
+      .audio-description {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 8px;
+      }
+
+      .audio-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8em;
+        color: #888;
+      }
+
+      .audio-date {
+        background: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 12px;
         font-weight: bold;
       }
 
-      .nav-content a:hover {
-        background-color: #575757;
-        border-radius: 4px;
+      .audio-size {
+        color: #666;
       }
 
-      .logo-container img {
-        height: 40px;
-        border-radius: 50%;
-      }
-
-      h1 {
-        text-align: center;
-        margin: 20px 0;
-      }
-
-      .video-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-        max-width: 1000px;
-        margin: auto;
-      }
-
-      .video-item iframe {
-        width: 100%;
-        height: 200px;
+      .download-btn {
+        background: #3c1a35;
+        color: white;
         border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+      }
+
+      .download-btn:hover {
+        background: #5a2a4a;
+        transform: translateY(-2px);
       }
 
       .pagination {
-        text-align: center;
-        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 30px;
       }
 
       .pagination button {
+        background: #3c1a35;
+        color: white;
+        border: none;
         padding: 10px 20px;
-        margin: 0 5px;
-        font-size: 14px;
+        border-radius: 25px;
         cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .pagination button:hover:not(:disabled) {
+        background: #5a2a4a;
+        transform: translateY(-2px);
       }
 
       .pagination button:disabled {
-        background-color: #ccc;
+        background: #ccc;
         cursor: not-allowed;
+        transform: none;
       }
-    </style>
-  </head>
-  <div class="navbar">
-  <div class="nav-content">
-    <a href="index.html">Home</a>
-    <a href="audio.html">Audio</a>
-    <a href="video.html">Video</a>
-    <div class="logo-container">
-      <img src="path/to/logo.jpg" alt="Logo" />
-    </div>
-    <a href="ebooks.html">E-Books</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="events.html">Events</a>
-  </div>
-</div>
 
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+        font-size: 1.2em;
+      }
 
-    <h1>Videos</h1>
-    <div class="video-grid" id="videoGrid"></div>
+      .error-message {
+        text-align: center;
+        padding: 40px;
+        color: #721c24;
+        background: #f8d7da;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
 
-    <div class="pagination">
-      <button id="prevBtn" disabled>Previous</button>
-      <button id="nextBtn" disabled>Next</button>
-    </div>
-
-    <script>
-      const playlistId = "PLEPUNw4tYLWXESnlHMz1nbqAtvHU75yim";
-      let nextPageToken = "";
-      let prevPageToken = "";
-
-      async function fetchVideos(pageToken = "") {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/api/videos?playlistId=${playlistId}&pageToken=${pageToken}`
-          );
-          const data = await response.json();
-
-          const videoGrid = document.getElementById("videoGrid");
-          videoGrid.innerHTML = "";
-
-          data.items.forEach((item) => {
-            const videoId = item.snippet.resourceId.videoId;
-            const iframe = document.createElement("iframe");
-            iframe.src = `https://www.youtube.com/embed/${videoId}`;
-            iframe.allow =
-              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-            iframe.allowFullscreen = true;
-
-            const div = document.createElement("div");
-            div.className = "video-item";
-            div.appendChild(iframe);
-            videoGrid.appendChild(div);
-          });
-
-          nextPageToken = data.nextPageToken || "";
-          prevPageToken = data.prevPageToken || "";
-
-          document.getElementById("prevBtn").disabled = !prevPageToken;
-          document.getElementById("nextBtn").disabled = !nextPageToken;
-        } catch (err) {
-          console.error("Failed to fetch videos:", err);
+      /* Mobile Responsive Design */
+      @media (max-width: 1024px) {
+        .audios-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
         }
       }
 
-      document.getElementById("prevBtn").addEventListener("click", () => {
-        fetchVideos(prevPageToken);
-      });
+      @media (max-width: 768px) {
+        .audios-header h1 {
+          font-size: 2em;
+        }
 
-      document.getElementById("nextBtn").addEventListener("click", () => {
-        fetchVideos(nextPageToken);
-      });
+        .audios-container {
+          padding: 20px 15px;
+        }
 
-      // Load first page
-      fetchVideos();
+        .audios-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .audio-player-container {
+          height: 150px;
+        }
+
+        .pagination button {
+          padding: 8px 15px;
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .audios-header h1 {
+          font-size: 1.8em;
+        }
+
+        .audios-header p {
+          font-size: 1em;
+        }
+
+        .collection-info {
+          padding: 15px;
+        }
+
+        .collection-info h3 {
+          font-size: 1.1em;
+        }
+
+        .audio-title {
+          font-size: 1.1em;
+        }
+
+        .pagination {
+          gap: 10px;
+        }
+
+        .pagination button {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Main navbar -->
+    <nav class="navbar">
+      <div class="nav-content">
+        <a href="index.html">Home</a>
+        <a href="audios.html" style="color: #ffffff; text-decoration: underline"
+          >Audio</a
+        >
+        <a href="vids.html">Video</a>
+
+        <div class="logo-container">
+          <img src="img_3.jpg" alt="Logo" />
+        </div>
+        <a href="books.html">E-Books</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="events.html">Events</a>
+      </div>
+    </nav>
+
+    <div class="audios-container">
+      <div class="audios-header">
+        <h1>Spiritual Discourses</h1>
+        <p>Sacred teachings and sermons by Swarn Dev Ji</p>
+      </div>
+
+      <div class="collection-info">
+        <h3>Swarn Dev Ji Parvachans</h3>
+        <p>
+          Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal,
+          available through Internet Archive
+        </p>
+      </div>
+
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search spiritual discourses..."
+          oninput="filterAudios()"
+        />
+      </div>
+
+      <div class="stats-container" id="statsContainer">
+        <div class="loading">Loading spiritual discourses...</div>
+      </div>
+
+      <div class="audios-grid" id="audiosGrid">
+        <!-- Audio cards will be loaded here -->
+      </div>
+
+      <div class="pagination" id="paginationContainer" style="display: none">
+        <button id="prevBtn" onclick="previousPage()">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+
+    <footer class="contact-bar">
+      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
+      <p>Phone: +91-12345-67890</p>
+    </footer>
+
+    <script>
+      let allAudioFiles = [];
+      let filteredAudioFiles = [];
+      let currentPage = 0;
+      const ITEMS_PER_PAGE = 12;
+
+      // Load audio files from Internet Archive
+      async function loadAudiosFromArchive() {
+        const grid = document.getElementById("audiosGrid");
+        const statsContainer = document.getElementById("statsContainer");
+
+        try {
+          // Show loading state
+          grid.innerHTML =
+            '<div class="loading">Loading spiritual discourses...</div>';
+          statsContainer.innerHTML = '<div class="loading">Loading...</div>';
+
+          console.log("Fetching audio files from Internet Archive...");
+          const response = await fetch("/api/archive/audios");
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Received data:", data);
+
+          if (data.success && data.audios) {
+            allAudioFiles = data.audios;
+            filteredAudioFiles = [...allAudioFiles];
+
+            console.log(`Loaded ${allAudioFiles.length} audio files`);
+
+            // Update stats
+            updateStats();
+
+            // Display first page
+            displayCurrentPage();
+            updatePagination();
+          } else {
+            throw new Error(data.error || "Failed to load audio files");
+          }
+        } catch (error) {
+          console.error("Error loading audio files:", error);
+          grid.innerHTML = `
+            <div class="error-message">
+              <h3>Unable to load spiritual discourses</h3>
+              <p>Please check your internet connection and try again.</p>
+              <p>Error: ${error.message}</p>
+            </div>
+          `;
+          statsContainer.innerHTML =
+            '<div class="error-message">Failed to load</div>';
+        }
+      }
+
+      function displayCurrentPage() {
+        const grid = document.getElementById("audiosGrid");
+        const startIndex = currentPage * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        const pageAudios = filteredAudioFiles.slice(startIndex, endIndex);
+
+        if (pageAudios.length === 0) {
+          grid.innerHTML = `
+            <div class="error-message">
+              <h3>No spiritual discourses found</h3>
+              <p>Try adjusting your search terms.</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = pageAudios
+          .map((audio) => {
+            const duration = audio.duration
+              ? formatDuration(audio.duration)
+              : "Unknown";
+            const size = audio.size ? formatFileSize(audio.size) : "Unknown";
+
+            return `
+              <div class="audio-card">
+                <div class="audio-player-container">
+                  <audio class="audio-player" controls>
+                    <source src="${audio.url}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+                <div class="audio-info">
+                  <div class="audio-title">${audio.title}</div>
+                </div>
+                
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function filterAudios() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase()
+          .trim();
+
+        if (searchTerm === "") {
+          filteredAudioFiles = [...allAudioFiles];
+        } else {
+          filteredAudioFiles = allAudioFiles.filter((audio) => {
+            const title = (audio.title || "").toLowerCase();
+            const description = (audio.description || "").toLowerCase();
+            const dateString = (audio.dateString || "").toLowerCase();
+
+            return (
+              title.includes(searchTerm) ||
+              description.includes(searchTerm) ||
+              dateString.includes(searchTerm)
+            );
+          });
+        }
+
+        currentPage = 0;
+        displayCurrentPage();
+        updateStats();
+        updatePagination();
+      }
+
+      function nextPage() {
+        const totalPages = Math.ceil(
+          filteredAudioFiles.length / ITEMS_PER_PAGE
+        );
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          displayCurrentPage();
+          updatePagination();
+          scrollToTop();
+        }
+      }
+
+      function previousPage() {
+        if (currentPage > 0) {
+          currentPage--;
+          displayCurrentPage();
+          updatePagination();
+          scrollToTop();
+        }
+      }
+
+      function updateStats() {
+        const statsContainer = document.getElementById("statsContainer");
+        const total = allAudioFiles.length;
+        const filtered = filteredAudioFiles.length;
+
+        if (total === 0) {
+          statsContainer.innerHTML = '<div class="loading">Loading...</div>';
+        } else if (filtered === total) {
+          statsContainer.innerHTML = `<strong>${total}</strong> spiritual discourse${
+            total !== 1 ? "s" : ""
+          } available`;
+        } else {
+          statsContainer.innerHTML = `Showing <strong>${filtered}</strong> of <strong>${total}</strong> discourse${
+            total !== 1 ? "s" : ""
+          }`;
+        }
+      }
+
+      function updatePagination() {
+        const paginationContainer = document.getElementById(
+          "paginationContainer"
+        );
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const pageInfo = document.getElementById("pageInfo");
+
+        const totalPages = Math.ceil(
+          filteredAudioFiles.length / ITEMS_PER_PAGE
+        );
+
+        if (totalPages <= 1) {
+          paginationContainer.style.display = "none";
+        } else {
+          paginationContainer.style.display = "flex";
+          prevBtn.disabled = currentPage === 0;
+          nextBtn.disabled = currentPage >= totalPages - 1;
+          pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+        }
+      }
+
+      function formatDuration(seconds) {
+        if (!seconds) return "Unknown";
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+
+        if (hours > 0) {
+          return `${hours}:${minutes.toString().padStart(2, "0")}:${secs
+            .toString()
+            .padStart(2, "0")}`;
+        } else {
+          return `${minutes}:${secs.toString().padStart(2, "0")}`;
+        }
+      }
+
+      function formatFileSize(bytes) {
+        if (!bytes) return "Unknown";
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (
+          Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i]
+        );
+      }
+
+      function scrollToTop() {
+        document.querySelector(".audios-header").scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+
+      // Load audios when page loads
+      document.addEventListener("DOMContentLoaded", loadAudiosFromArchive);
     </script>
   </body>
 </html>
