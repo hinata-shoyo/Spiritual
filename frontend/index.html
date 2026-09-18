@@ -1,55 +1,418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Navbar with Centered Logo</title>
-    <link rel="stylesheet" href="style.css" />
-    <style></style>
+    <title
+      data-en="Guruji - Spiritual Guidance"
+      data-hi="गुरुजी - आध्यात्मिक मार्गदर्शन"
+    >
+      Guruji - Spiritual Guidance
+    </title>
+    <link rel="stylesheet" href="style.css?v=2" />
+    <style>
+      #main-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 60px 20px 50px;
+        background: #fff6ef;
+      }
+
+      .hero h1 {
+        font-size: 2.6em;
+        color: var(--primary);
+        margin-bottom: 12px;
+      }
+
+      .hero p {
+        font-size: 1.2em;
+        color: var(--text-light);
+        max-width: 650px;
+        margin: 0 auto 25px;
+        line-height: 1.6;
+      }
+
+      .hero-logo {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 20px;
+        border: 4px solid var(--primary);
+        box-shadow: 0 4px 20px rgba(60, 26, 53, 0.3);
+      }
+
+      .hero-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero-buttons .btn-primary {
+        font-size: 1.1em;
+        padding: 14px 28px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+
+      .feature-card {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
+        text-decoration: none;
+        color: inherit;
+        border-bottom: 5px solid var(--primary);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .feature-icon {
+        font-size: 2.8em;
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      .feature-card h3 {
+        color: var(--primary);
+        font-size: 1.3em;
+        margin-bottom: 8px;
+      }
+
+      .feature-card p {
+        color: var(--text-light);
+        font-size: 0.95em;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .about-section {
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 50px 20px 70px;
+        text-align: center;
+      }
+
+      .about-section h2 {
+        font-size: 1.8em;
+        color: var(--primary);
+        margin-bottom: 18px;
+      }
+
+      .about-section p {
+        font-size: 1.1em;
+        line-height: 1.8;
+        color: var(--text);
+        margin-bottom: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .features {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 18px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero {
+          padding: 40px 16px 35px;
+        }
+        .hero h1 {
+          font-size: 2em;
+        }
+        .hero p {
+          font-size: 1.1em;
+        }
+        .hero-logo {
+          width: 110px;
+          height: 110px;
+        }
+        .hero-buttons .btn-primary {
+          font-size: 1em;
+          padding: 12px 24px;
+        }
+        .features {
+          grid-template-columns: 1fr;
+          padding: 30px 16px;
+          gap: 14px;
+        }
+        .feature-card {
+          padding: 22px 18px;
+        }
+        .feature-card h3 {
+          font-size: 1.2em;
+        }
+        .about-section {
+          padding: 35px 16px 50px;
+        }
+        .about-section h2 {
+          font-size: 1.5em;
+        }
+        .about-section p {
+          font-size: 1em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero {
+          padding: 30px 12px 25px;
+        }
+        .hero h1 {
+          font-size: 1.5em;
+        }
+        .hero p {
+          font-size: 1em;
+        }
+        .hero-logo {
+          width: 90px;
+          height: 90px;
+        }
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-buttons .btn-primary {
+          width: 220px;
+          max-width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Main navbar -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <a href="#">Home</a>
-        <a href="audios.html">Audio</a>
-        <a href="vids.html">Video</a>
+    <a
+      href="#main-content"
+      class="skip-link"
+      data-en="Skip to content"
+      data-hi="मुख्य सामग्री पर जाएं"
+      >Skip to content</a
+    >
 
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-content">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div class="logo-container">
-          <img src="img_3.jpg" alt="Logo" />
+          <img src="img_3.jpg" alt="Guruji Logo" loading="lazy" />
         </div>
-        <a href="books.html">E-Books</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="events.html">Events</a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" class="active-page" data-en="Home" data-hi="होम"
+            >Home</a
+          >
+          <a href="audios.html" data-en="Audio" data-hi="ऑडियो">Audio</a>
+          <a href="vids.html" data-en="Video" data-hi="वीडियो">Video</a>
+          <a href="books.html" data-en="E-Books" data-hi="ई-पुस्तकें"
+            >E-Books</a
+          >
+          <!-- <a href="gallery.html" data-en="Gallery" data-hi="गैलरी">Gallery</a> -->
+          <a href="events.html" data-en="Events" data-hi="ईवेंट">Events</a>
+          <div class="lang-toggle-container">
+            <button
+              class="lang-toggle"
+              id="langToggle"
+              aria-label="Switch language"
+            >
+              हिन्दी
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="content-wrapper">
-      <div class="image-section">
-        <img src="img_1.jpg" alt="Main Display Image" />
-      </div>
-      <div class="text-section">
-        <p>
-          गुरुजी के परिचय में क्या कहना चाहिए ये वैसी ही बात है कि कोई पूछे
-          समुद्र में पानी कितना है? सूरज में रोशनी और आसमान का अंत कहाँ है? इन
-          सभी का उत्तर शायद कोई कोई, दार्शनिक या तत्त्ववेत्ता दे दे, मगर गुरुजी
-          के गुणों का वर्णन ब्रह्माण्ड की कोई लेखनी, कोई सोच या कोई कल्पना नहीं
-          कर सकती। फिर भी हमने उनके संगसंग में रहकर अपने क्षुद्र अनुभव से इस
-          असीम प्रतिभा को जाना जाता है। वे थे - गुरुजी आत्मशक्ति रूप से साधारण
-          से-जन - पात्र, धर्मपालक, प्रेम-प्रिय, सेवा-समर्पित और उच्च विचारों से
-          ओत-प्रोत। उन्होंने अपने हर कृत्य से, आचरण से और व्यवहार से एक-एक शब्द
-          में धर्म का स्वरूप दिखाया। गुरु स्वरूपाव जी महाराज कबीर, गोरखनाथ,
-          दयानंद और गुरुनानक जैसे उच्चकोटि के गुरुप्रणीत की परम्परा के संत थे।
-          इन्होंने साधारण गृहस्थों में रहते हुए धर्म-प्रणीत की और समाजानन्द के
-          लिए एक सच्चा उदाहरण प्रस्तुत किया। इनके जीवन का एकमात्र ध्येय, कल्याण,
-          कल्याण और कल्याण ही था।
+    <main id="main-content">
+      <section class="hero">
+        <div class="hero-logo">
+          <img src="img_3.jpg" alt="Guruji" loading="lazy" />
+        </div>
+        <h1
+          data-en="Teachings of Swarn Dev Ji"
+          data-hi="स्वर्ण देव जी की शिक्षाएँ"
+        >
+          Teachings of Swarn Dev Ji
+        </h1>
+        <p
+          data-en="Discover spiritual wisdom, enlightening discourses, and sacred teachings to guide you on the path to inner peace and self-realization."
+          data-hi="आध्यात्मिक ज्ञान, प्रेरक प्रवचन और पवित्र शिक्षाओं को खोजें जो आपको आंतरिक शांति और आत्म-साक्षात्कार के मार्ग पर ले जाएं।"
+        >
+          Discover spiritual wisdom, enlightening discourses, and sacred
+          teachings to guide you on the path to inner peace and
+          self-realization.
         </p>
+        <div class="hero-buttons">
+          <a href="audios.html" class="btn-primary">
+            <span class="btn-icon" data-icon="headphones"></span>
+            <span data-en="Listen to Discourses" data-hi="प्रवचन सुनें"
+              >Listen to Discourses</span
+            >
+          </a>
+          <a href="vids.html" class="btn-primary">
+            <span class="btn-icon" data-icon="video"></span>
+            <span data-en="Watch Videos" data-hi="वीडियो देखें"
+              >Watch Videos</span
+            >
+          </a>
+          <a href="books.html" class="btn-primary">
+            <span class="btn-icon" data-icon="book-open"></span>
+            <span data-en="Read E-Books" data-hi="ई-पुस्तकें पढ़ें"
+              >Read E-Books</span
+            >
+          </a>
+        </div>
+      </section>
+
+      <div class="instruction-banner">
+        <span class="hint-icon" data-icon="arrow-right"></span>
+        <span
+          data-en="Tap any card below to explore spiritual content"
+          data-hi="आध्यात्मिक सामग्री देखने के लिए नीचे किसी भी कार्ड पर टैप करें"
+          >Tap any card below to explore spiritual content</span
+        >
       </div>
-    </div>
+
+      <section class="features">
+        <a href="audios.html" class="feature-card">
+          <span class="feature-icon" data-icon="headphones"></span>
+          <h3 data-en="Spiritual Audios" data-hi="आध्यात्मिक ऑडियो">
+            Spiritual Audios
+          </h3>
+          <p
+            data-en="Sacred teachings and sermons by Swarn Dev Ji available for streaming"
+            data-hi="स्वर्ण देव जी के पवित्र प्रवचन और उपदेश स्ट्रीमिंग के लिए उपलब्ध"
+          >
+            Sacred teachings and sermons by Swarn Dev Ji available for streaming
+          </p>
+        </a>
+        <a href="vids.html" class="feature-card">
+          <span class="feature-icon" data-icon="video"></span>
+          <h3 data-en="Video Discourses" data-hi="वीडियो प्रवचन">
+            Video Discourses
+          </h3>
+          <p
+            data-en="Watch enlightening spiritual talks, bhajans, and meditation guides"
+            data-hi="प्रेरक आध्यात्मिक वार्ता, भजन और ध्यान मार्गदर्शिकाएं देखें"
+          >
+            Watch enlightening spiritual talks, bhajans, and meditation guides
+          </p>
+        </a>
+        <a href="books.html" class="feature-card">
+          <span class="feature-icon" data-icon="book-open"></span>
+          <h3 data-en="E-Books" data-hi="ई-पुस्तकें">E-Books</h3>
+          <p
+            data-en="Read sacred scriptures and spiritual texts online"
+            data-hi="पवित्र शास्त्र और आध्यात्मिक ग्रंथ ऑनलाइन पढ़ें"
+          >
+            Read sacred scriptures and spiritual texts online
+          </p>
+        </a>
+        <!-- Photo Gallery hidden for now
+        <a href="gallery.html" class="feature-card">
+          <span class="feature-icon" data-icon="image"></span>
+          <h3 data-en="Photo Gallery" data-hi="फोटो गैलरी">Photo Gallery</h3>
+          <p
+            data-en="Browse spiritual moments, events, and divine experiences"
+            data-hi="आध्यात्मिक पलों, घटनाओं और दिव्य अनुभवों को देखें"
+          >
+            Browse spiritual moments, events, and divine experiences
+          </p>
+        </a>
+        -->
+        <a href="events.html" class="feature-card">
+          <span class="feature-icon" data-icon="calendar"></span>
+          <h3 data-en="Events" data-hi="ईवेंट">Events</h3>
+          <p
+            data-en="Stay updated with upcoming satsangs, workshops, and gatherings"
+            data-hi="आगामी सत्संग, कार्यशालाओं और सभाओं से अपडेट रहें"
+          >
+            Stay updated with upcoming satsangs, workshops, and gatherings
+          </p>
+        </a>
+        <a
+          href="#"
+          class="feature-card"
+          style="cursor: default; border-bottom-color: var(--text-muted)"
+        >
+          <span class="feature-icon" data-icon="sun"></span>
+          <h3 data-en="Divine Teachings" data-hi="दिव्य शिक्षाएं">
+            Divine Teachings
+          </h3>
+          <p
+            data-en="Ancient wisdom for modern life — guidance for the spiritual seeker"
+            data-hi="आधुनिक जीवन के लिए प्राचीन ज्ञान — आध्यात्मिक साधक के लिए मार्गदर्शन"
+          >
+            Ancient wisdom for modern life — guidance for the spiritual seeker
+          </p>
+        </a>
+      </section>
+
+      <section class="about-section">
+        <h2
+          data-en="About Guruji Swarn Dev Ji"
+          data-hi="गुरुजी स्वर्ण देव जी के बारे में"
+        >
+          About Guruji Swarn Dev Ji
+        </h2>
+        <p
+          data-en="Swarn Dev Ji of Karnal is a revered spiritual guide whose teachings illuminate the path to inner peace and self-realization. Through spiritual discourses, bhajans, and sacred writings, the timeless wisdom of the sages is made accessible to all seekers."
+          data-hi="करनाल के स्वर्ण देव जी एक पूजनीय आध्यात्मिक मार्गदर्शक हैं जिनकी शिक्षाएं आंतरिक शांति और आत्म-साक्षात्कार के मार्ग को प्रकाशित करती हैं। आध्यात्मिक प्रवचनों, भजनों और पवित्र लेखों के माध्यम से, ऋषियों का कालातीत ज्ञान सभी साधकों के लिए सुलभ बनाया गया है।"
+        >
+          Swarn Dev Ji of Karnal is a revered spiritual guide whose teachings
+          illuminate the path to inner peace and self-realization. Through
+          spiritual discourses, bhajans, and sacred writings, the timeless
+          wisdom of the sages is made accessible to all seekers.
+        </p>
+        <p
+          data-en="Explore this collection of audio recordings, video discourses, e-books, and photographs to deepen your spiritual practice and connect with the divine."
+          data-hi="अपनी आध्यात्मिक साधना को गहरा करने और दिव्य से जुड़ने के लिए ऑडियो रिकॉर्डिंग, वीडियो प्रवचन, ई-पुस्तकों और तस्वीरों के इस संग्रह का अन्वेषण करें।"
+        >
+          Explore this collection of audio recordings, video discourses,
+          e-books, and photographs to deepen your spiritual practice and connect
+          with the divine.
+        </p>
+      </section>
+    </main>
 
     <footer class="contact-bar">
-      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
-      <p>Phone: +91-12345-67890</p>
+      <p
+        data-en="Contact us for more information"
+        data-hi="अधिक जानकारी के लिए संपर्क करें"
+      >
+        Contact us for more information
+      </p>
+      <p><span class="icon" data-icon="map-pin"></span> Karnal, Haryana</p>
     </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <span data-icon="arrow-up"></span>
+    </button>
+    <script src="icons.js?v=2"></script>
+    <script src="nav.js?v=2"></script>
   </body>
 </html>

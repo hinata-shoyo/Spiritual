@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spiritual Audios - Guruji</title>
-    <link rel="stylesheet" href="style.css" />
+    <title data-en="Spiritual Audios - Guruji" data-hi="आध्यात्मिक ऑडियो - गुरुजी">Spiritual Audios - Guruji</title>
+    <link rel="stylesheet" href="style.css?v=2" />
     <style>
       .audios-container {
         max-width: 1200px;
@@ -12,90 +12,37 @@
         padding: 40px 20px;
       }
 
-      .audios-header {
-        text-align: center;
-        margin-bottom: 40px;
-        color: #3c1a35;
-      }
-
-      .audios-header h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        color: #3c1a35;
-      }
-
-      .audios-header p {
-        font-size: 1.2em;
-        color: #666;
-      }
-
-      .collection-info {
-        background: linear-gradient(135deg, #3c1a35 0%, #5a2a4a 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
+      .search-wrapper {
+        display: flex;
+        justify-content: center;
         margin-bottom: 30px;
-        text-align: center;
       }
 
-      .collection-info h3 {
-        margin: 0 0 10px 0;
-        font-size: 1.3em;
-      }
-
-      .collection-info p {
+      .search-wrapper .search-container {
         margin: 0;
-        opacity: 0.9;
-      }
-
-      .search-container {
-        max-width: 600px;
-        margin: 0 auto 30px;
-        position: relative;
-      }
-
-      .search-container input {
         width: 100%;
-        padding: 15px 20px;
-        border: 2px solid #3c1a35;
-        border-radius: 25px;
-        font-size: 1em;
-        outline: none;
-        transition: all 0.3s ease;
-        box-sizing: border-box;
-      }
-
-      .search-container input:focus {
-        box-shadow: 0 0 15px rgba(60, 26, 53, 0.3);
-        border-color: #5a2a4a;
-      }
-
-      .stats-container {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #666;
-        font-size: 1.1em;
+        max-width: 500px;
       }
 
       .audios-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 24px;
         margin-bottom: 40px;
       }
 
       .audio-card {
-        background: white;
-        border-radius: 15px;
+        background: var(--bg-card);
+        border-radius: var(--radius);
         padding: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-left: 5px solid #3c1a35;
+        box-shadow: var(--shadow);
+        transition: transform var(--transition), box-shadow var(--transition);
+        border-left: 5px solid var(--primary);
       }
 
       .audio-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
       }
 
       .audio-player-container {
@@ -105,65 +52,37 @@
 
       .audio-player {
         width: 100%;
-        height: 36px;
+        height: 44px;
         outline: none;
+        border-radius: var(--radius-sm);
       }
 
       .audio-info {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
 
       .audio-title {
-        font-size: 1.2em;
+        font-size: 1.15em;
         font-weight: bold;
-        color: #3c1a35;
-        margin-bottom: 8px;
+        color: var(--primary);
+        margin-bottom: 6px;
         line-height: 1.3;
       }
 
       .audio-description {
-        color: #666;
+        color: var(--text-light);
         font-size: 0.9em;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
-      .audio-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.8em;
-        color: #888;
-      }
-
-      .audio-date {
-        background: #f0f0f0;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-weight: bold;
-      }
-
-      .audio-size {
-        color: #666;
-      }
-
-      .download-btn {
-        background: #3c1a35;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        text-decoration: none;
+      .audio-category {
         display: inline-block;
-        text-align: center;
-        width: 100%;
-      }
-
-      .download-btn:hover {
-        background: #5a2a4a;
-        transform: translateY(-2px);
+        background: var(--accent-light);
+        color: var(--primary);
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 0.78em;
+        font-weight: bold;
       }
 
       .pagination {
@@ -175,18 +94,19 @@
       }
 
       .pagination button {
-        background: #3c1a35;
+        background: var(--primary);
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 25px;
+        padding: 12px 24px;
+        border-radius: var(--radius-full);
         cursor: pointer;
         font-weight: bold;
-        transition: all 0.3s ease;
+        transition: all var(--transition);
+        min-height: var(--touch-target);
       }
 
       .pagination button:hover:not(:disabled) {
-        background: #5a2a4a;
+        background: var(--primary-light);
         transform: translateY(-2px);
       }
 
@@ -196,185 +116,170 @@
         transform: none;
       }
 
-      .loading {
+      .pagination span {
+        font-size: 1em;
+        color: var(--text-light);
+        font-weight: bold;
+        min-width: 120px;
         text-align: center;
-        padding: 40px;
-        color: #666;
-        font-size: 1.2em;
       }
 
-      .error-message {
+      .stats-container {
         text-align: center;
-        padding: 40px;
-        color: #721c24;
-        background: #f8d7da;
-        border-radius: 10px;
-        margin: 20px 0;
+        margin-bottom: 20px;
+        color: var(--text-light);
+        font-size: 1.1em;
       }
 
-      /* Mobile Responsive Design */
+      .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text-light);
+        font-size: 1.1em;
+        grid-column: 1 / -1;
+      }
+
       @media (max-width: 1024px) {
         .audios-grid {
           grid-template-columns: repeat(2, 1fr);
-          gap: 20px;
+          gap: 18px;
         }
       }
 
       @media (max-width: 768px) {
-        .audios-header h1 {
-          font-size: 2em;
-        }
-
         .audios-container {
           padding: 20px 15px;
         }
 
         .audios-grid {
           grid-template-columns: 1fr;
-          gap: 20px;
+          gap: 16px;
         }
 
-        .audio-player-container {
-          height: 150px;
-        }
-
-        .pagination button {
-          padding: 8px 15px;
-          font-size: 14px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .audios-header h1 {
-          font-size: 1.8em;
-        }
-
-        .audios-header p {
-          font-size: 1em;
-        }
-
-        .collection-info {
-          padding: 15px;
-        }
-
-        .collection-info h3 {
-          font-size: 1.1em;
-        }
-
-        .audio-title {
-          font-size: 1.1em;
+        .search-wrapper .search-container {
+          max-width: 100%;
         }
 
         .pagination {
+          flex-direction: column;
           gap: 10px;
         }
 
         .pagination button {
-          padding: 6px 12px;
-          font-size: 12px;
+          width: 200px;
+          max-width: 100%;
+        }
+
+        .pagination span {
+          min-width: auto;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .audio-title {
+          font-size: 1.05em;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Main navbar -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <a href="index.html">Home</a>
-        <a href="audios.html" style="color: #ffffff; text-decoration: underline"
-          >Audio</a
-        >
-        <a href="vids.html">Video</a>
+    <a href="#main-content" class="skip-link" data-en="Skip to content" data-hi="मुख्य सामग्री पर जाएं">Skip to content</a>
 
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-content">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div class="logo-container">
-          <img src="img_3.jpg" alt="Logo" />
+          <img src="img_3.jpg" alt="Guruji Logo" loading="lazy" />
         </div>
-        <a href="books.html">E-Books</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="events.html">Events</a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" data-en="Home" data-hi="होम">Home</a>
+          <a href="audios.html" class="active-page" data-en="Audio" data-hi="ऑडियो">Audio</a>
+          <a href="vids.html" data-en="Video" data-hi="वीडियो">Video</a>
+          <a href="books.html" data-en="E-Books" data-hi="ई-पुस्तकें">E-Books</a>
+          <!-- <a href="gallery.html" data-en="Gallery" data-hi="गैलरी">Gallery</a> -->
+          <!-- <a href="events.html" data-en="Events" data-hi="ईवेंट">Events</a> -->
+          <div class="lang-toggle-container">
+            <button class="lang-toggle" id="langToggle" aria-label="Switch language">हिन्दी</button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="audios-container">
-      <div class="audios-header">
-        <h1>Spiritual Discourses</h1>
-        <p>Sacred teachings and sermons by Swarn Dev Ji</p>
+    <div class="audios-container" id="main-content">
+      <div class="page-header">
+        <h1 data-en="Spiritual Discourses" data-hi="आध्यात्मिक प्रवचन">Spiritual Discourses</h1>
+        <p data-en="Sacred teachings and sermons by Swarn Dev Ji" data-hi="स्वर्ण देव जी के पवित्र उपदेश और प्रवचन">Sacred teachings and sermons by Swarn Dev Ji</p>
       </div>
 
-      <div class="collection-info">
-        <h3>Swarn Dev Ji Parvachans</h3>
-        <p>
-          Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal,
-          available through Internet Archive
-        </p>
+      <div class="instruction-banner">
+        <span class="hint-icon" data-icon="headphones"></span>
+        <span data-en="Tap play on any audio to listen. Use search to find specific discourses." data-hi="सुनने के लिए किसी भी ऑडियो पर प्ले दबाएं। विशिष्ट प्रवचन खोजने के लिए खोज का उपयोग करें।">Tap play on any audio to listen. Use search to find specific discourses.</span>
       </div>
 
-      <div class="search-container">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search spiritual discourses..."
-          oninput="filterAudios()"
-        />
+      <div class="section-banner">
+        <h3 data-en="Swarn Dev Ji Parvachans" data-hi="स्वर्ण देव जी के प्रवचन">Swarn Dev Ji Parvachans</h3>
+        <p data-en="Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available through Internet Archive" data-hi="करनाल के गुरु स्वर्ण देव जी के आध्यात्मिक प्रवचन और उपदेश, इंटरनेट आर्काइव के माध्यम से उपलब्ध">Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available through Internet Archive</p>
+      </div>
+
+      <div class="search-wrapper">
+        <div class="search-container">
+          <input type="text" id="searchInput" data-en-placeholder="Search spiritual discourses..." data-hi-placeholder="आध्यात्मिक प्रवचन खोजें..." placeholder="Search spiritual discourses..." oninput="filterAudios()" />
+        </div>
       </div>
 
       <div class="stats-container" id="statsContainer">
-        <div class="loading">Loading spiritual discourses...</div>
+        <div class="loading" data-en="Loading spiritual discourses..." data-hi="आध्यात्मिक प्रवचन लोड हो रहे हैं...">Loading spiritual discourses...</div>
       </div>
 
-      <div class="audios-grid" id="audiosGrid">
-        <!-- Audio cards will be loaded here -->
-      </div>
+      <div class="audios-grid" id="audiosGrid"></div>
 
       <div class="pagination" id="paginationContainer" style="display: none">
-        <button id="prevBtn" onclick="previousPage()">Previous</button>
+        <button id="prevBtn" onclick="previousPage()" data-en="Previous" data-hi="पिछला">Previous</button>
         <span id="pageInfo"></span>
-        <button id="nextBtn" onclick="nextPage()">Next</button>
+        <button id="nextBtn" onclick="nextPage()" data-en="Next" data-hi="अगला">Next</button>
       </div>
     </div>
 
     <footer class="contact-bar">
-      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
-      <p>Phone: +91-12345-67890</p>
+      <p data-en="Contact us for more information" data-hi="अधिक जानकारी के लिए संपर्क करें">Contact us for more information</p>
+      <p><span class="icon" data-icon="map-pin"></span> Karnal, Haryana</p>
     </footer>
 
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <span data-icon="arrow-up"></span>
+    </button>
+    <script src="icons.js?v=2"></script>
+    <script src="nav.js?v=2"></script>
     <script>
-      let allAudioFiles = [];
-      let filteredAudioFiles = [];
-      let currentPage = 0;
-      const ITEMS_PER_PAGE = 12;
+      var allAudioFiles = [];
+      var filteredAudioFiles = [];
+      var currentPage = 0;
+      var ITEMS_PER_PAGE = 12;
 
-      // Load audio files from Internet Archive
       async function loadAudiosFromArchive() {
-        const grid = document.getElementById("audiosGrid");
-        const statsContainer = document.getElementById("statsContainer");
+        var grid = document.getElementById("audiosGrid");
+        var statsContainer = document.getElementById("statsContainer");
 
         try {
-          // Show loading state
-          grid.innerHTML =
-            '<div class="loading">Loading spiritual discourses...</div>';
+          grid.innerHTML = '<div class="loading">Loading...</div>';
           statsContainer.innerHTML = '<div class="loading">Loading...</div>';
 
-          console.log("Fetching audio files from Internet Archive...");
-          const response = await fetch("/api/archive/audios");
+          var response = await fetch("/api/archive/audios");
 
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error("HTTP error! status: " + response.status);
           }
 
-          const data = await response.json();
-          console.log("Received data:", data);
+          var data = await response.json();
 
           if (data.success && data.audios) {
             allAudioFiles = data.audios;
-            filteredAudioFiles = [...allAudioFiles];
-
-            console.log(`Loaded ${allAudioFiles.length} audio files`);
-
-            // Update stats
+            filteredAudioFiles = allAudioFiles.slice();
             updateStats();
-
-            // Display first page
             displayCurrentPage();
             updatePagination();
           } else {
@@ -382,80 +287,50 @@
           }
         } catch (error) {
           console.error("Error loading audio files:", error);
-          grid.innerHTML = `
-            <div class="error-message">
-              <h3>Unable to load spiritual discourses</h3>
-              <p>Please check your internet connection and try again.</p>
-              <p>Error: ${error.message}</p>
-            </div>
-          `;
-          statsContainer.innerHTML =
-            '<div class="error-message">Failed to load</div>';
+          grid.innerHTML = '<div class="error-message"><h3 data-en="Unable to load spiritual discourses" data-hi="आध्यात्मिक प्रवचन लोड करने में असमर्थ">Unable to load spiritual discourses</h3><p data-en="Please check your internet connection and try again." data-hi="कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।">Please check your internet connection and try again.</p><p>Error: ' + error.message + '</p></div>';
+          statsContainer.innerHTML = '<div class="error-message">Failed to load</div>';
         }
       }
 
       function displayCurrentPage() {
-        const grid = document.getElementById("audiosGrid");
-        const startIndex = currentPage * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const pageAudios = filteredAudioFiles.slice(startIndex, endIndex);
+        var grid = document.getElementById("audiosGrid");
+        var startIndex = currentPage * ITEMS_PER_PAGE;
+        var endIndex = startIndex + ITEMS_PER_PAGE;
+        var pageAudios = filteredAudioFiles.slice(startIndex, endIndex);
 
         if (pageAudios.length === 0) {
-          grid.innerHTML = `
-            <div class="error-message">
-              <h3>No spiritual discourses found</h3>
-              <p>Try adjusting your search terms.</p>
-            </div>
-          `;
+          grid.innerHTML = '<div class="no-results"><span data-en="No spiritual discourses found. Try adjusting your search." data-hi="कोई आध्यात्मिक प्रवचन नहीं मिला। अपनी खोज बदलकर देखें।">No spiritual discourses found. Try adjusting your search.</span></div>';
           return;
         }
 
-        grid.innerHTML = pageAudios
-          .map((audio) => {
-            const duration = audio.duration
-              ? formatDuration(audio.duration)
-              : "Unknown";
-            const size = audio.size ? formatFileSize(audio.size) : "Unknown";
-
-            return `
-              <div class="audio-card">
-                <div class="audio-player-container">
-                  <audio class="audio-player" controls>
-                    <source src="${audio.url}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-                <div class="audio-info">
-                  <div class="audio-title">${audio.title}</div>
-                </div>
-                
-              </div>
-            `;
-          })
-          .join("");
+        grid.innerHTML = pageAudios.map(function (audio) {
+          return '<div class="audio-card">' +
+            '<div class="audio-player-container">' +
+              '<audio class="audio-player" controls preload="none">' +
+                '<source src="' + audio.url + '" type="audio/mpeg">' +
+                'Your browser does not support the audio element.' +
+              '</audio>' +
+            '</div>' +
+            '<div class="audio-info">' +
+              '<div class="audio-title">' + audio.title + '</div>' +
+              (audio.description ? '<div class="audio-description">' + audio.description + '</div>' : '') +
+            '</div>' +
+          '</div>';
+        }).join("");
       }
 
       function filterAudios() {
-        const searchTerm = document
-          .getElementById("searchInput")
-          .value.toLowerCase()
-          .trim();
+        var searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
 
-        if (searchTerm === "") {
-          filteredAudioFiles = [...allAudioFiles];
-        } else {
-          filteredAudioFiles = allAudioFiles.filter((audio) => {
-            const title = (audio.title || "").toLowerCase();
-            const description = (audio.description || "").toLowerCase();
-            const dateString = (audio.dateString || "").toLowerCase();
-
-            return (
-              title.includes(searchTerm) ||
-              description.includes(searchTerm) ||
-              dateString.includes(searchTerm)
-            );
-          });
-        }
+        filteredAudioFiles = allAudioFiles.filter(function (audio) {
+          var title = (audio.title || "").toLowerCase();
+          var description = (audio.description || "").toLowerCase();
+          var dateString = (audio.dateString || "").toLowerCase();
+          return searchTerm === "" ||
+            title.includes(searchTerm) ||
+            description.includes(searchTerm) ||
+            dateString.includes(searchTerm);
+        });
 
         currentPage = 0;
         displayCurrentPage();
@@ -464,9 +339,7 @@
       }
 
       function nextPage() {
-        const totalPages = Math.ceil(
-          filteredAudioFiles.length / ITEMS_PER_PAGE
-        );
+        var totalPages = Math.ceil(filteredAudioFiles.length / ITEMS_PER_PAGE);
         if (currentPage < totalPages - 1) {
           currentPage++;
           displayCurrentPage();
@@ -485,76 +358,41 @@
       }
 
       function updateStats() {
-        const statsContainer = document.getElementById("statsContainer");
-        const total = allAudioFiles.length;
-        const filtered = filteredAudioFiles.length;
+        var container = document.getElementById("statsContainer");
+        var total = allAudioFiles.length;
+        var filtered = filteredAudioFiles.length;
 
         if (total === 0) {
-          statsContainer.innerHTML = '<div class="loading">Loading...</div>';
+          container.innerHTML = '<div class="loading">Loading...</div>';
         } else if (filtered === total) {
-          statsContainer.innerHTML = `<strong>${total}</strong> spiritual discourse${
-            total !== 1 ? "s" : ""
-          } available`;
+          container.innerHTML = '<strong>' + total + '</strong> <span data-en="spiritual discourses available" data-hi="आध्यात्मिक प्रवचन उपलब्ध">spiritual discourses available</span>';
         } else {
-          statsContainer.innerHTML = `Showing <strong>${filtered}</strong> of <strong>${total}</strong> discourse${
-            total !== 1 ? "s" : ""
-          }`;
+          container.innerHTML = '<span data-en="Showing" data-hi="दिखा रहे हैं">Showing</span> <strong>' + filtered + '</strong> <span data-en="of" data-hi="में से">of</span> <strong>' + total + '</strong> <span data-en="discourses" data-hi="प्रवचन">discourses</span>';
         }
       }
 
       function updatePagination() {
-        const paginationContainer = document.getElementById(
-          "paginationContainer"
-        );
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        const pageInfo = document.getElementById("pageInfo");
+        var container = document.getElementById("paginationContainer");
+        var prevBtn = document.getElementById("prevBtn");
+        var nextBtn = document.getElementById("nextBtn");
+        var pageInfo = document.getElementById("pageInfo");
 
-        const totalPages = Math.ceil(
-          filteredAudioFiles.length / ITEMS_PER_PAGE
-        );
+        var totalPages = Math.ceil(filteredAudioFiles.length / ITEMS_PER_PAGE);
 
         if (totalPages <= 1) {
-          paginationContainer.style.display = "none";
+          container.style.display = "none";
         } else {
-          paginationContainer.style.display = "flex";
+          container.style.display = "flex";
           prevBtn.disabled = currentPage === 0;
           nextBtn.disabled = currentPage >= totalPages - 1;
-          pageInfo.textContent = `Page ${currentPage + 1} of ${totalPages}`;
+          pageInfo.textContent = "Page " + (currentPage + 1) + " of " + totalPages;
         }
-      }
-
-      function formatDuration(seconds) {
-        if (!seconds) return "Unknown";
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-
-        if (hours > 0) {
-          return `${hours}:${minutes.toString().padStart(2, "0")}:${secs
-            .toString()
-            .padStart(2, "0")}`;
-        } else {
-          return `${minutes}:${secs.toString().padStart(2, "0")}`;
-        }
-      }
-
-      function formatFileSize(bytes) {
-        if (!bytes) return "Unknown";
-        const sizes = ["Bytes", "KB", "MB", "GB"];
-        const i = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (
-          Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i]
-        );
       }
 
       function scrollToTop() {
-        document.querySelector(".audios-header").scrollIntoView({
-          behavior: "smooth",
-        });
+        document.querySelector(".page-header").scrollIntoView({ behavior: "smooth" });
       }
 
-      // Load audios when page loads
       document.addEventListener("DOMContentLoaded", loadAudiosFromArchive);
     </script>
   </body>

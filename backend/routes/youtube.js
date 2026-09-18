@@ -6,7 +6,6 @@ require("dotenv").config();
 const router = express.Router();
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-const MAX_RESULTS = 6;
 
 // Validation middleware
 const validatePlaylistRequest = (req, res, next) => {
@@ -31,17 +30,17 @@ const validatePlaylistRequest = (req, res, next) => {
 
 // Videos endpoint
 router.get("/videos", validatePlaylistRequest, async (req, res) => {
-  const { playlistId, pageToken = "" } = req.query;
+  const { playlistId, pageToken = "", maxResults = 6 } = req.query;
 
   console.log(
-    `Fetching videos for playlist: ${playlistId}, pageToken: ${pageToken}`
+    `Fetching videos for playlist: ${playlistId}, pageToken: ${pageToken}, maxResults: ${maxResults}`
   );
 
   const url = `https://www.googleapis.com/youtube/v3/playlistItems`;
   const params = {
     part: "snippet",
     playlistId: playlistId,
-    maxResults: MAX_RESULTS,
+    maxResults: parseInt(maxResults),
     key: YOUTUBE_API_KEY,
     ...(pageToken && { pageToken }),
   };

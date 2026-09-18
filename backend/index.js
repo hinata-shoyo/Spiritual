@@ -11,8 +11,22 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from frontend directory
-app.use(express.static(path.join(__dirname, "../frontend")));
+// Serve static files from frontend directory with caching
+app.use(express.static(path.join(__dirname, "../frontend"), {
+  maxAge: '7d',
+  etag: true,
+  lastModified: true,
+  setHeaders: function (res, filePath) {
+    // HTML should always be revalidated so deploys are picked up immediately
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    }
+    // Code assets get a short cache; bump the ?v= query on change to bust it
+    else if (/\.(css|js)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    }
+  }
+}));
 
 // Import routes
 const youtubeRoutes = require("./routes/youtube");

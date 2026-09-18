@@ -17,6 +17,18 @@ This guide will help you deploy your Guruji Website to Render.
    git push origin main
    ```
 
+   > **Checklist before you push (important):**
+   >
+   > - `git status` should show **everything** committed, including new files
+   >   such as `frontend/icons.js` and `frontend/nav.js`. If those are missing
+   >   from git, the deployed pages will load without icons and without the
+   >   language toggle. They are currently tracked as _untracked_ — add them
+   >   with `git add frontend/icons.js frontend/nav.js` if needed.
+   > - `backend/.env` must **not** be committed (it is gitignored). Real
+   >   secrets are set in the Render dashboard instead.
+   > - Cloudinary / YouTube env vars are **optional**. Without them the photo
+   >   gallery and video feeds simply have no data; the rest of the site works.
+
 2. **Ensure your repository structure** looks like this:
    ```
    guruji-website/

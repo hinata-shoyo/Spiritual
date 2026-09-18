@@ -1,261 +1,269 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Books - Guruji</title>
-    <link rel="stylesheet" href="style.css" />
+    <title data-en="E-Books - Guruji" data-hi="ई-पुस्तकें - गुरुजी">
+      E-Books - Guruji
+    </title>
+    <link rel="stylesheet" href="style.css?v=2" />
     <style>
       .books-container {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
         padding: 40px 20px;
-      }
-
-      .books-header {
-        text-align: center;
-        margin-bottom: 40px;
-        color: #3c1a35;
-      }
-
-      .books-header h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        color: #3c1a35;
-      }
-
-      .books-header p {
-        font-size: 1.2em;
-        color: #666;
       }
 
       .books-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        margin-bottom: 40px;
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
       }
 
       .book {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-left: 5px solid #3c1a35;
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 28px 20px;
+        box-shadow: var(--shadow);
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
         text-align: center;
         text-decoration: none;
         display: block;
+        color: inherit;
+        cursor: pointer;
+        border-bottom: 5px solid var(--primary);
       }
 
       .book:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
-
-      .book.active {
-        border-left: 5px solid #ffd8e1;
-        background: #fff6ef;
-      }
-
-      .book h3 {
-        font-size: 1.4em;
-        font-weight: bold;
-        color: #3c1a35;
-        margin: 0;
+        box-shadow: var(--shadow-hover);
       }
 
       .book-icon {
         font-size: 3em;
-        margin-bottom: 15px;
-        color: #3c1a35;
+        margin-bottom: 14px;
+        display: block;
       }
 
-      .book-viewer {
-        width: 100%;
-        height: 600px;
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+      .book h3 {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: var(--primary);
+        margin: 0 0 6px;
       }
 
-      .no-book-selected {
-        text-align: center;
-        padding: 60px 20px;
-        color: #666;
-        font-size: 1.2em;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      .book .book-author {
+        color: var(--text-light);
+        font-size: 0.85em;
+        margin-bottom: 10px;
       }
 
-      /* Mobile Responsive Design */
-      @media (max-width: 1024px) {
+      .book .book-desc {
+        color: var(--text-light);
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      @media (max-width: 900px) {
         .books-grid {
           grid-template-columns: repeat(2, 1fr);
+          gap: 18px;
         }
       }
 
-      @media (max-width: 768px) {
-        .books-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .books-header h1 {
-          font-size: 2em;
-        }
-
+      @media (max-width: 600px) {
         .books-container {
           padding: 20px 15px;
         }
 
-        .book {
-          padding: 20px;
+        .books-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
         }
 
-        .book-viewer {
-          height: 400px;
+        .book {
+          padding: 22px 18px;
         }
       }
 
       @media (max-width: 480px) {
-        .books-header h1 {
-          font-size: 1.8em;
-        }
-
-        .books-header p {
-          font-size: 1em;
-        }
-
         .book h3 {
-          font-size: 1.2em;
+          font-size: 1.15em;
         }
-
         .book-icon {
           font-size: 2.5em;
-        }
-
-        .book-viewer {
-          height: 300px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Main navbar -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <a href="index.html">Home</a>
-        <a href="audios.html">Audio</a>
-        <a href="vids.html">Video</a>
+    <a href="#main-content" class="skip-link" data-en="Skip to content"
+      >Skip to content</a
+    >
 
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-content">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div class="logo-container">
-          <img src="img_3.jpg" alt="Logo" />
+          <img src="img_3.jpg" alt="Guruji Logo" loading="lazy" />
         </div>
-        <a href="books.html" style="color: #ffffff; text-decoration: underline"
-          >E-Books</a
-        >
-        <a href="gallery.html">Gallery</a>
-        <a href="events.html">Events</a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" data-en="Home" data-hi="होम">Home</a>
+          <a href="audios.html" data-en="Audio" data-hi="ऑडियो">Audio</a>
+          <a href="vids.html" data-en="Video" data-hi="वीडियो">Video</a>
+          <a
+            href="books.html"
+            class="active-page"
+            data-en="E-Books"
+            data-hi="ई-पुस्तकें"
+            >E-Books</a
+          >
+          <!-- <a href="gallery.html" data-en="Gallery" data-hi="गैलरी">Gallery</a> -->
+          <!-- <a href="events.html" data-en="Events" data-hi="ईवेंट">Events</a> -->
+          <div class="lang-toggle-container">
+            <button
+              class="lang-toggle"
+              id="langToggle"
+              aria-label="Switch language"
+            >
+              हिन्दी
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="books-container">
-      <div class="books-header">
-        <h1>Spiritual E-Books</h1>
-        <p>Read enlightening spiritual texts and sacred scriptures</p>
+    <div class="books-container" id="main-content">
+      <div class="page-header">
+        <h1 data-en="Spiritual E-Books" data-hi="आध्यात्मिक ई-पुस्तकें">
+          Spiritual E-Books
+        </h1>
+        <p
+          data-en="Read enlightening spiritual texts and sacred scriptures"
+          data-hi="प्रेरक आध्यात्मिक ग्रंथ और पवित्र शास्त्र पढ़ें"
+        >
+          Read enlightening spiritual texts and sacred scriptures
+        </p>
       </div>
 
-      <!-- 📚 Book Thumbnails (keep real links) -->
-      <div class="books-grid">
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview"
-        >
-          <div class="book-icon">📖</div>
-          <h3>Book 1</h3>
-        </a>
-
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1MmDpD2yMqVfA-jSpJBHuOhYg9N0TNA7l/preview"
-        >
-          <div class="book-icon">🕉️</div>
-          <h3>Book 2</h3>
-        </a>
-
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1Pu9O95OR1jhq_3GA5jwX6kJKi0Tg9ATP/preview"
-        >
-          <div class="book-icon">🧘</div>
-          <h3>Book 3</h3>
-        </a>
-
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1L2M9wQsLpluNcp__rXsN2SBhny8i7agv/preview"
-        >
-          <div class="book-icon">🙏</div>
-          <h3>Book 4</h3>
-        </a>
-
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1S5YPFnFfxFS06LVuhzDd2-QNXxRwmM_v/preview"
-        >
-          <div class="book-icon">🌟</div>
-          <h3>Book 5</h3>
-        </a>
-
-        <a
-          class="book"
-          href="https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview"
-        >
-          <div class="book-icon">📚</div>
-          <h3>Book 6</h3>
-        </a>
-      </div>
-
-      <!-- 📖 Book Viewer (open in page) -->
-      <iframe
-        id="bookViewer"
-        class="book-viewer"
-        src=""
-        allowfullscreen
-      ></iframe>
+      <div class="books-grid" id="booksGrid"></div>
     </div>
 
     <footer class="contact-bar">
-      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
-      <p>Phone: +91-12345-67890</p>
+      <p
+        data-en="Contact us for more information"
+        data-hi="अधिक जानकारी के लिए संपर्क करें"
+      >
+        Contact us for more information
+      </p>
+      <p><span class="icon" data-icon="map-pin"></span> Karnal, Haryana</p>
     </footer>
 
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <span data-icon="arrow-up"></span>
+    </button>
+    <script src="icons.js?v=2"></script>
+    <script src="nav.js?v=2"></script>
     <script>
-      function openBook(link, element) {
-        // Open inside the iframe
-        document.getElementById("bookViewer").src = link;
+      var booksData = [
+        {
+          id: 1,
+          title: "Book 1",
+          author: "Swarn Dev Ji",
+          desc: "A profound spiritual text exploring the path to inner peace and enlightenment.",
+          icon: "book-open",
+          url: "https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview",
+        },
+        {
+          id: 2,
+          title: "Book 2",
+          author: "Swarn Dev Ji",
+          desc: "Sacred teachings on devotion, meditation, and the spiritual journey.",
+          icon: "sun",
+          url: "https://drive.google.com/file/d/1MmDpD2yMqVfA-jSpJBHuOhYg9N0TNA7l/preview",
+        },
+        {
+          id: 3,
+          title: "Book 3",
+          author: "Swarn Dev Ji",
+          desc: "Ancient wisdom for modern seekers — timeless guidance for daily life.",
+          icon: "users",
+          url: "https://drive.google.com/file/d/1Pu9O95OR1jhq_3GA5jwX6kJKi0Tg9ATP/preview",
+        },
+        {
+          id: 4,
+          title: "Book 4",
+          author: "Swarn Dev Ji",
+          desc: "Divine hymns and bhajans to elevate the soul and bring peace.",
+          icon: "heart",
+          url: "https://drive.google.com/file/d/1L2M9wQsLpluNcp__rXsN2SBhny8i7agv/preview",
+        },
+        {
+          id: 5,
+          title: "Book 5",
+          author: "Swarn Dev Ji",
+          desc: "Illuminating discourses on the nature of reality and the self.",
+          icon: "star",
+          url: "https://drive.google.com/file/d/1S5YPFnFfxFS06LVuhzDd2-QNXxRwmM_v/preview",
+        },
+        {
+          id: 6,
+          title: "Book 6",
+          author: "Swarn Dev Ji",
+          desc: "A collection of spiritual teachings for daily contemplation and growth.",
+          icon: "book",
+          url: "https://drive.google.com/file/d/1mMWYZARYBn2Ns5jFhQY8332IhPnCVCq8/preview",
+        },
+      ];
 
-        // Update active state
-        document
-          .querySelectorAll(".book")
-          .forEach((book) => book.classList.remove("active"));
-        if (element) {
-          element.classList.add("active");
-        }
+      function renderBooks(books) {
+        var grid = document.getElementById("booksGrid");
+        grid.innerHTML = books
+          .map(function (book) {
+            return (
+              '<a class="book" href="' +
+              book.url +
+              '" target="_blank" rel="noopener">' +
+              '<span class="book-icon">' +
+              window.iconSVG(book.icon) +
+              "</span>" +
+              '<h3 data-en="' +
+              book.title +
+              '" data-hi="' +
+              book.title +
+              '">' +
+              book.title +
+              "</h3>" +
+              '<div class="book-author">' +
+              book.author +
+              "</div>" +
+              '<div class="book-desc">' +
+              book.desc +
+              "</div>" +
+              "</a>"
+            );
+          })
+          .join("");
+
+        var lang = localStorage.getItem("gurujiLang") || "en";
+        grid.querySelectorAll("[data-en]").forEach(function (el) {
+          el.textContent =
+            lang === "en"
+              ? el.getAttribute("data-en")
+              : el.getAttribute("data-hi");
+        });
       }
 
-      // Intercept clicks on real links to open in viewer instead of navigating away
-      document.querySelectorAll(".book").forEach((book) => {
-        book.addEventListener("click", (e) => {
-          const link = book.getAttribute("href");
-          if (link) {
-            e.preventDefault();
-            openBook(link, book);
-          }
-        });
-      });
+      renderBooks(booksData);
     </script>
   </body>
 </html>

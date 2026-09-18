@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Events - Guruji</title>
-    <link rel="stylesheet" href="style.css" />
+    <title data-en="Events - Guruji" data-hi="ईवेंट - गुरुजी">Events - Guruji</title>
+    <link rel="stylesheet" href="style.css?v=2" />
     <style>
       .events-container {
         max-width: 1200px;
@@ -12,93 +12,80 @@
         padding: 40px 20px;
       }
 
-      .events-header {
-        text-align: center;
-        margin-bottom: 40px;
-        color: #3c1a35;
-      }
-
-      .events-header h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        color: #3c1a35;
-      }
-
-      .events-header p {
-        font-size: 1.2em;
-        color: #666;
-      }
-
       .events-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 24px;
         margin-bottom: 40px;
       }
 
       .event-card {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-left: 5px solid #3c1a35;
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 24px;
+        box-shadow: var(--shadow);
+        transition: transform var(--transition), box-shadow var(--transition);
+        border-left: 5px solid var(--primary);
       }
 
       .event-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-hover);
       }
 
       .event-date {
-        background: #3c1a35;
-        color: #ffd8e1;
+        background: var(--primary);
+        color: var(--accent);
         padding: 8px 15px;
         border-radius: 20px;
         display: inline-block;
         font-weight: bold;
-        margin-bottom: 15px;
+        margin-bottom: 14px;
         font-size: 0.9em;
       }
 
       .event-title {
-        font-size: 1.4em;
+        font-size: 1.3em;
         font-weight: bold;
-        color: #3c1a35;
+        color: var(--primary);
         margin-bottom: 10px;
       }
 
       .event-description {
-        color: #666;
+        color: var(--text-light);
         line-height: 1.6;
-        margin-bottom: 15px;
+        margin-bottom: 14px;
+        font-size: 0.95em;
       }
 
       .event-details {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 15px;
-        padding-top: 15px;
+        margin-top: 14px;
+        padding-top: 14px;
         border-top: 1px solid #eee;
       }
 
       .event-time {
-        color: #3c1a35;
+        color: var(--primary);
         font-weight: bold;
+        margin-bottom: 4px;
       }
 
       .event-location {
-        color: #666;
+        color: var(--text-light);
         font-style: italic;
+        font-size: 0.9em;
       }
 
       .event-status {
-        padding: 5px 12px;
+        padding: 6px 14px;
         border-radius: 15px;
         font-size: 0.8em;
         font-weight: bold;
         text-transform: uppercase;
+        white-space: nowrap;
       }
 
       .status-upcoming {
@@ -119,201 +106,178 @@
       .no-events {
         text-align: center;
         padding: 60px 20px;
-        color: #666;
+        color: var(--text-light);
         font-size: 1.2em;
       }
 
       .no-events h3 {
-        color: #3c1a35;
+        color: var(--primary);
         margin-bottom: 15px;
       }
 
-      /* Mobile Responsive Design */
       @media (max-width: 1024px) {
         .events-grid {
           grid-template-columns: repeat(2, 1fr);
+          gap: 18px;
         }
       }
 
       @media (max-width: 768px) {
-        .events-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .events-header h1 {
-          font-size: 2em;
-        }
-
         .events-container {
           padding: 20px 15px;
         }
 
+        .events-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
         .event-card {
-          padding: 20px;
+          padding: 18px;
         }
 
         .event-details {
           flex-direction: column;
           align-items: flex-start;
-          gap: 10px;
+          gap: 8px;
         }
       }
 
       @media (max-width: 480px) {
-        .events-header h1 {
-          font-size: 1.8em;
-        }
-
-        .events-header p {
-          font-size: 1em;
-        }
-
         .event-title {
-          font-size: 1.2em;
+          font-size: 1.15em;
         }
 
         .event-card {
-          padding: 15px;
+          padding: 14px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Main navbar -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <a href="index.html">Home</a>
-        <a href="audios.html">Audio</a>
-        <a href="vids.html">Video</a>
+    <a href="#main-content" class="skip-link" data-en="Skip to content" data-hi="मुख्य सामग्री पर जाएं">Skip to content</a>
 
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-content">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div class="logo-container">
-          <img src="img_3.jpg" alt="Logo" />
+          <img src="img_3.jpg" alt="Guruji Logo" loading="lazy" />
         </div>
-        <a href="books.html">E-Books</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="events.html" style="color: #ffffff; text-decoration: underline"
-          >Events</a
-        >
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" data-en="Home" data-hi="होम">Home</a>
+          <a href="audios.html" data-en="Audio" data-hi="ऑडियो">Audio</a>
+          <a href="vids.html" data-en="Video" data-hi="वीडियो">Video</a>
+          <a href="books.html" data-en="E-Books" data-hi="ई-पुस्तकें">E-Books</a>
+          <!-- <a href="gallery.html" data-en="Gallery" data-hi="गैलरी">Gallery</a> -->
+          <a href="events.html" class="active-page" data-en="Events" data-hi="ईवेंट">Events</a>
+          <div class="lang-toggle-container">
+            <button class="lang-toggle" id="langToggle" aria-label="Switch language">हिन्दी</button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="events-container">
-      <div class="events-header">
-        <h1>Upcoming Events</h1>
-        <p>
-          Join us for spiritual discourses, meditation sessions, and community
-          gatherings
-        </p>
+    <div class="events-container" id="main-content">
+      <div class="page-header">
+        <h1 data-en="Upcoming Events" data-hi="आगामी ईवेंट">Upcoming Events</h1>
+        <p data-en="Join us for spiritual discourses, meditation sessions, and community gatherings" data-hi="आध्यात्मिक प्रवचन, ध्यान सत्र और सामुदायिक सभाओं में हमारे साथ जुड़ें">Join us for spiritual discourses, meditation sessions, and community gatherings</p>
+      </div>
+
+      <div class="instruction-banner">
+        <span class="hint-icon" data-icon="calendar"></span>
+        <span data-en="Click an event for more details. Stay updated with upcoming programs." data-hi="अधिक जानकारी के लिए ईवेंट पर क्लिक करें। आगामी कार्यक्रमों से अपडेट रहें।">Click an event for more details. Stay updated with upcoming programs.</span>
       </div>
 
       <div class="events-grid">
-        <!-- Event 1 -->
         <div class="event-card">
           <div class="event-date">December 15, 2024</div>
-          <div class="event-title">
-            Spiritual Discourse - "The Path to Inner Peace"
-          </div>
-          <div class="event-description">
-            Join us for an enlightening discourse on finding inner peace through
-            meditation and spiritual practices. This session will include guided
-            meditation and Q&A session.
+          <div class="event-title" data-en="Spiritual Discourse - 'The Path to Inner Peace'" data-hi="आध्यात्मिक प्रवचन - 'आंतरिक शांति का मार्ग'">Spiritual Discourse - "The Path to Inner Peace"</div>
+          <div class="event-description" data-en="Join us for an enlightening discourse on finding inner peace through meditation and spiritual practices. This session will include guided meditation and Q&A session." data-hi="ध्यान और आध्यात्मिक अभ्यासों के माध्यम से आंतरिक शांति पाने पर एक प्रेरक प्रवचन में हमारे साथ जुड़ें। इस सत्र में निर्देशित ध्यान और प्रश्नोत्तरी सत्र शामिल होगा।">
+            Join us for an enlightening discourse on finding inner peace through meditation and spiritual practices. This session will include guided meditation and Q&A session.
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 6:00 PM - 8:00 PM</div>
-              <div class="event-location">📍 Main Meditation Hall</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 6:00 PM - 8:00 PM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Main Meditation Hall</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
         </div>
 
-        <!-- Event 2 -->
         <div class="event-card">
           <div class="event-date">December 20, 2024</div>
-          <div class="event-title">
-            Bhajan Sandhya - Evening Devotional Songs
-          </div>
-          <div class="event-description">
-            Experience the divine through soulful bhajans and devotional songs.
-            Open to all devotees. Please bring your own musical instruments if
-            you wish to participate.
+          <div class="event-title" data-en="Bhajan Sandhya - Evening Devotional Songs" data-hi="भजन संध्या - शाम के भजन">Bhajan Sandhya - Evening Devotional Songs</div>
+          <div class="event-description" data-en="Experience the divine through soulful bhajans and devotional songs. Open to all devotees." data-hi="भावपूर्ण भजनों के माध्यम से दिव्य अनुभव करें। सभी भक्तों के लिए खुला।">
+            Experience the divine through soulful bhajans and devotional songs. Open to all devotees.
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 7:00 PM - 9:00 PM</div>
-              <div class="event-location">📍 Prayer Hall</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 7:00 PM - 9:00 PM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Prayer Hall</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
         </div>
 
-        <!-- Event 3 -->
         <div class="event-card">
           <div class="event-date">December 25, 2024</div>
-          <div class="event-title">Christmas Special - Community Service</div>
-          <div class="event-description">
-            Celebrate the spirit of giving through community service. We'll be
-            distributing food and warm clothes to the needy. Volunteers welcome!
+          <div class="event-title" data-en="Community Service Program" data-hi="सामुदायिक सेवा कार्यक्रम">Community Service Program</div>
+          <div class="event-description" data-en="Celebrate the spirit of giving through community service. Volunteers welcome!" data-hi="सामुदायिक सेवा के माध्यम से देने की भावना का जश्न मनाएं। स्वयंसेवकों का स्वागत है!">
+            Celebrate the spirit of giving through community service. Volunteers welcome!
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 10:00 AM - 2:00 PM</div>
-              <div class="event-location">📍 Community Center</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 10:00 AM - 2:00 PM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Community Center</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
         </div>
 
-        <!-- Event 4 -->
         <div class="event-card">
           <div class="event-date">December 30, 2024</div>
-          <div class="event-title">New Year Meditation Retreat</div>
-          <div class="event-description">
-            Start the new year with peace and clarity through our special
-            meditation retreat. Includes silent meditation, spiritual talks, and
-            group discussions.
+          <div class="event-title" data-en="New Year Meditation Retreat" data-hi="नव वर्ष ध्यान शिविर">New Year Meditation Retreat</div>
+          <div class="event-description" data-en="Start the new year with peace and clarity through our special meditation retreat." data-hi="हमारे विशेष ध्यान शिविर के माध्यम से शांति और स्पष्टता के साथ नए वर्ष की शुरुआत करें।">
+            Start the new year with peace and clarity through our special meditation retreat.
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 9:00 AM - 5:00 PM</div>
-              <div class="event-location">📍 Retreat Center</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 9:00 AM - 5:00 PM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Retreat Center</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
         </div>
 
-        <!-- Event 5 -->
         <div class="event-card">
           <div class="event-date">January 5, 2025</div>
-          <div class="event-title">
-            Weekly Satsang - "Living with Awareness"
-          </div>
-          <div class="event-description">
-            Regular weekly satsang focusing on practical spirituality and
-            mindful living. Open discussion format with spiritual guidance.
+          <div class="event-title" data-en="Weekly Satsang - 'Living with Awareness'" data-hi="साप्ताहिक सत्संग - 'जागरूकता के साथ जीना'">Weekly Satsang - "Living with Awareness"</div>
+          <div class="event-description" data-en="Regular weekly satsang focusing on practical spirituality and mindful living." data-hi="व्यावहारिक आध्यात्मिकता और सचेत जीवन पर नियमित साप्ताहिक सत्संग।">
+            Regular weekly satsang focusing on practical spirituality and mindful living.
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 5:00 PM - 6:30 PM</div>
-              <div class="event-location">📍 Meditation Room</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 5:00 PM - 6:30 PM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Meditation Room</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
         </div>
 
-        <!-- Event 6 -->
         <div class="event-card">
           <div class="event-date">January 12, 2025</div>
-          <div class="event-title">Yoga and Pranayama Workshop</div>
-          <div class="event-description">
-            Learn traditional yoga asanas and breathing techniques for physical
-            and mental well-being. Suitable for all levels. Please bring your
-            own yoga mat.
+          <div class="event-title" data-en="Yoga and Pranayama Workshop" data-hi="योग और प्राणायाम कार्यशाला">Yoga and Pranayama Workshop</div>
+          <div class="event-description" data-en="Learn traditional yoga asanas and breathing techniques for physical and mental well-being." data-hi="शारीरिक और मानसिक कल्याण के लिए पारंपरिक योग आसन और श्वास तकनीक सीखें।">
+            Learn traditional yoga asanas and breathing techniques for physical and mental well-being.
           </div>
           <div class="event-details">
             <div>
-              <div class="event-time">⏰ 7:00 AM - 9:00 AM</div>
-              <div class="event-location">📍 Yoga Hall</div>
+              <div class="event-time"><span class="icon" data-icon="clock"></span> 7:00 AM - 9:00 AM</div>
+              <div class="event-location"><span class="icon" data-icon="map-pin"></span> Yoga Hall</div>
             </div>
             <span class="event-status status-upcoming">Upcoming</span>
           </div>
@@ -322,8 +286,14 @@
     </div>
 
     <footer class="contact-bar">
-      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
-      <p>Phone: +91-12345-67890</p>
+      <p data-en="Contact us for more information" data-hi="अधिक जानकारी के लिए संपर्क करें">Contact us for more information</p>
+      <p><span class="icon" data-icon="map-pin"></span> Karnal, Haryana</p>
     </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <span data-icon="arrow-up"></span>
+    </button>
+    <script src="icons.js?v=2"></script>
+    <script src="nav.js?v=2"></script>
   </body>
 </html>

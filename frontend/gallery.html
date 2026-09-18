@@ -1,32 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo Gallery - Guruji</title>
-    <link rel="stylesheet" href="style.css" />
+    <title data-en="Photo Gallery - Guruji" data-hi="फोटो गैलरी - गुरुजी">Photo Gallery - Guruji</title>
+    <link rel="stylesheet" href="style.css?v=2" />
     <style>
       .gallery-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 40px 20px;
-      }
-
-      .gallery-header {
-        text-align: center;
-        margin-bottom: 40px;
-        color: #3c1a35;
-      }
-
-      .gallery-header h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        color: #3c1a35;
-      }
-
-      .gallery-header p {
-        font-size: 1.2em;
-        color: #666;
       }
 
       .gallery-grid {
@@ -38,25 +21,25 @@
 
       .photo-card {
         position: relative;
-        background: white;
-        border-radius: 15px;
+        background: var(--bg-card);
+        border-radius: var(--radius);
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: var(--shadow);
+        transition: transform var(--transition), box-shadow var(--transition);
         cursor: pointer;
         aspect-ratio: 1;
       }
 
       .photo-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--shadow-hover);
       }
 
       .photo-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        transition: transform 0.4s ease;
       }
 
       .photo-card:hover img {
@@ -68,7 +51,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
         color: white;
         padding: 20px;
         transform: translateY(100%);
@@ -76,6 +59,11 @@
       }
 
       .photo-card:hover .photo-overlay {
+        transform: translateY(0);
+      }
+
+      /* Always show overlay on touch devices via a tap */
+      .photo-card.show-overlay .photo-overlay {
         transform: translateY(0);
       }
 
@@ -90,7 +78,6 @@
         opacity: 0.9;
       }
 
-      /* Lightbox Modal */
       .lightbox {
         display: none;
         position: fixed;
@@ -99,7 +86,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: rgba(0, 0, 0, 0.92);
         backdrop-filter: blur(5px);
       }
 
@@ -115,10 +102,24 @@
 
       .lightbox img {
         max-width: 90%;
-        max-height: 90%;
+        max-height: 85%;
         object-fit: contain;
         border-radius: 10px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .lightbox-caption {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        text-align: center;
+        max-width: 80%;
+      }
+
+      .lightbox-caption .photo-title {
+        font-size: 1.2em;
       }
 
       .lightbox-close {
@@ -130,11 +131,20 @@
         font-weight: bold;
         cursor: pointer;
         z-index: 1001;
-        transition: color 0.3s ease;
+        transition: color var(--transition);
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 50%;
+        border: none;
       }
 
       .lightbox-close:hover {
-        color: #ffd8e1;
+        color: var(--accent);
+        background: rgba(0, 0, 0, 0.7);
       }
 
       .lightbox-nav {
@@ -144,87 +154,74 @@
         color: white;
         font-size: 30px;
         cursor: pointer;
-        padding: 20px;
-        background: rgba(0, 0, 0, 0.5);
+        padding: 16px 20px;
+        background: rgba(0, 0, 0, 0.4);
         border-radius: 50%;
-        transition: background 0.3s ease;
+        transition: background var(--transition);
+        border: none;
+        min-height: var(--touch-target);
+        min-width: var(--touch-target);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .lightbox-nav:hover {
         background: rgba(0, 0, 0, 0.8);
       }
 
-      .lightbox-prev {
-        left: 20px;
-      }
+      .lightbox-prev { left: 20px; }
+      .lightbox-next { right: 20px; }
 
-      .lightbox-next {
-        right: 20px;
-      }
-
-      .loading {
-        text-align: center;
-        padding: 40px;
-        color: #666;
-        font-size: 1.2em;
-      }
-
-      .error-message {
-        text-align: center;
-        padding: 40px;
-        color: #721c24;
-        background: #f8d7da;
-        border-radius: 10px;
-        margin: 20px 0;
-      }
-
-      /* Mobile Responsive Design */
       @media (max-width: 1024px) {
         .gallery-grid {
           grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
         }
       }
 
       @media (max-width: 768px) {
-        .gallery-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .gallery-header h1 {
-          font-size: 2em;
-        }
-
         .gallery-container {
           padding: 20px 15px;
         }
 
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
         .lightbox-nav {
           font-size: 24px;
-          padding: 15px;
+          padding: 14px 18px;
         }
 
         .lightbox-close {
           font-size: 30px;
           top: 15px;
-          right: 20px;
+          right: 15px;
+          width: 44px;
+          height: 44px;
+        }
+
+        .photo-overlay {
+          transform: translateY(0);
+          padding: 14px;
+          background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        }
+
+        .photo-card .photo-overlay {
+          transform: translateY(0);
         }
       }
 
       @media (max-width: 480px) {
         .gallery-grid {
           grid-template-columns: 1fr;
-        }
-
-        .gallery-header h1 {
-          font-size: 1.8em;
-        }
-
-        .gallery-header p {
-          font-size: 1em;
+          gap: 12px;
         }
 
         .photo-overlay {
-          padding: 15px;
+          padding: 12px;
         }
 
         .photo-title {
@@ -232,124 +229,114 @@
         }
 
         .photo-description {
-          font-size: 0.8em;
+          font-size: 0.85em;
+        }
+
+        .lightbox-nav {
+          font-size: 20px;
+          padding: 12px 16px;
+        }
+
+        .lightbox-close {
+          font-size: 26px;
+          top: 10px;
+          right: 10px;
+          width: 40px;
+          height: 40px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Main navbar -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <a href="index.html">Home</a>
-        <a href="audios.html">Audio</a>
-        <a href="vids.html">Video</a>
+    <a href="#main-content" class="skip-link" data-en="Skip to content" data-hi="मुख्य सामग्री पर जाएं">Skip to content</a>
 
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <div class="nav-content">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <div class="logo-container">
-          <img src="img_3.jpg" alt="Logo" />
+          <img src="img_3.jpg" alt="Guruji Logo" loading="lazy" />
         </div>
-        <a href="books.html">E-Books</a>
-        <a
-          href="gallery.html"
-          style="color: #ffffff; text-decoration: underline"
-          >Gallery</a
-        >
-        <a href="events.html">Events</a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" data-en="Home" data-hi="होम">Home</a>
+          <a href="audios.html" data-en="Audio" data-hi="ऑडियो">Audio</a>
+          <a href="vids.html" data-en="Video" data-hi="वीडियो">Video</a>
+          <a href="books.html" data-en="E-Books" data-hi="ई-पुस्तकें">E-Books</a>
+          <!-- <a href="gallery.html" class="active-page" data-en="Gallery" data-hi="गैलरी">Gallery</a> -->
+          <!-- <a href="events.html" data-en="Events" data-hi="ईवेंट">Events</a> -->
+          <div class="lang-toggle-container">
+            <button class="lang-toggle" id="langToggle" aria-label="Switch language">हिन्दी</button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="gallery-container">
-      <div class="gallery-header">
-        <h1>Photo Gallery</h1>
-        <p>
-          Spiritual moments, events, and divine experiences captured in time
-        </p>
+    <div class="gallery-container" id="main-content">
+      <div class="page-header">
+        <h1 data-en="Photo Gallery" data-hi="फोटो गैलरी">Photo Gallery</h1>
+        <p data-en="Spiritual moments, events, and divine experiences captured in time" data-hi="आध्यात्मिक पल, घटनाएं और दिव्य अनुभव समय में कैद">Spiritual moments, events, and divine experiences captured in time</p>
+      </div>
+
+      <div class="instruction-banner">
+        <span class="hint-icon" data-icon="image"></span>
+        <span data-en="Tap a photo to view it in full size. Swipe or use arrows to navigate." data-hi="पूर्ण आकार में देखने के लिए फोटो पर टैप करें। नेविगेट करने के लिए स्वाइप करें या तीरों का उपयोग करें।">Tap a photo to view it in full size. Swipe or use arrows to navigate.</span>
       </div>
 
       <div class="gallery-grid" id="galleryGrid">
-        <!-- Sample photos (will be replaced with Cloudinary images) -->
         <div class="photo-card" onclick="openLightbox(0)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+1"
-            alt="Spiritual Gathering"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+1" alt="Spiritual Gathering" />
           <div class="photo-overlay">
             <div class="photo-title">Spiritual Gathering</div>
             <div class="photo-description">Morning meditation session</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(1)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+2"
-            alt="Bhajan Session"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+2" alt="Bhajan Session" />
           <div class="photo-overlay">
             <div class="photo-title">Bhajan Session</div>
             <div class="photo-description">Evening devotional songs</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(2)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+3"
-            alt="Temple Visit"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+3" alt="Temple Visit" />
           <div class="photo-overlay">
             <div class="photo-title">Temple Visit</div>
             <div class="photo-description">Sacred temple pilgrimage</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(3)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+4"
-            alt="Yoga Class"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+4" alt="Yoga Class" />
           <div class="photo-overlay">
             <div class="photo-title">Yoga Class</div>
             <div class="photo-description">Morning yoga practice</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(4)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+5"
-            alt="Community Service"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+5" alt="Community Service" />
           <div class="photo-overlay">
             <div class="photo-title">Community Service</div>
             <div class="photo-description">Helping those in need</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(5)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+6"
-            alt="Meditation Retreat"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+6" alt="Meditation Retreat" />
           <div class="photo-overlay">
             <div class="photo-title">Meditation Retreat</div>
             <div class="photo-description">Silent meditation practice</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(6)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+7"
-            alt="Spiritual Discourse"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+7" alt="Spiritual Discourse" />
           <div class="photo-overlay">
             <div class="photo-title">Spiritual Discourse</div>
             <div class="photo-description">Enlightening teachings</div>
           </div>
         </div>
-
         <div class="photo-card" onclick="openLightbox(7)">
-          <img
-            src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+8"
-            alt="Festival Celebration"
-          />
+          <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+8" alt="Festival Celebration" />
           <div class="photo-overlay">
             <div class="photo-title">Festival Celebration</div>
             <div class="photo-description">Divine festival joy</div>
@@ -357,99 +344,57 @@
         </div>
       </div>
 
-      <!-- Load More Button -->
       <div style="text-align: center; margin-top: 30px">
-        <button
-          id="loadMoreBtn"
-          onclick="loadMorePhotos()"
-          style="
-            display: none;
-            background: #3c1a35;
-            color: #ffd8e1;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-          "
-        >
+        <button id="loadMoreBtn" onclick="loadMorePhotos()" class="btn-primary" style="display: none">
           Load More Photos
         </button>
       </div>
     </div>
 
-    <!-- Lightbox Modal -->
     <div id="lightbox" class="lightbox">
-      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
       <div class="lightbox-content">
         <img id="lightbox-img" src="" alt="" />
+        <div class="lightbox-caption" id="lightboxCaption">
+          <div class="photo-title" id="lightboxTitle"></div>
+          <div class="photo-description" id="lightboxDesc"></div>
+        </div>
       </div>
-      <div class="lightbox-nav lightbox-prev" onclick="changePhoto(-1)">
-        &#10094;
-      </div>
-      <div class="lightbox-nav lightbox-next" onclick="changePhoto(1)">
-        &#10095;
-      </div>
+      <button class="lightbox-nav lightbox-prev" onclick="changePhoto(-1)">&#10094;</button>
+      <button class="lightbox-nav lightbox-next" onclick="changePhoto(1)">&#10095;</button>
     </div>
 
     <footer class="contact-bar">
-      <p>Address: 123 Web Avenue, HTML City, CSS State</p>
-      <p>Phone: +91-12345-67890</p>
+      <p data-en="Contact us for more information" data-hi="अधिक जानकारी के लिए संपर्क करें">Contact us for more information</p>
+      <p><span class="icon" data-icon="map-pin"></span> Karnal, Haryana</p>
     </footer>
 
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <span data-icon="arrow-up"></span>
+    </button>
+    <script src="icons.js?v=2"></script>
+    <script src="nav.js?v=2"></script>
     <script>
-      // Sample photo data (replace with your Cloudinary URLs)
-      const photos = [
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+1",
-          title: "Spiritual Gathering",
-          description: "Morning meditation session",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+2",
-          title: "Bhajan Session",
-          description: "Evening devotional songs",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+3",
-          title: "Temple Visit",
-          description: "Sacred temple pilgrimage",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+4",
-          title: "Yoga Class",
-          description: "Morning yoga practice",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+5",
-          title: "Community Service",
-          description: "Helping those in need",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+6",
-          title: "Meditation Retreat",
-          description: "Silent meditation practice",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+7",
-          title: "Spiritual Discourse",
-          description: "Enlightening teachings",
-        },
-        {
-          url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+8",
-          title: "Festival Celebration",
-          description: "Divine festival joy",
-        },
+      var photos = [
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+1", title: "Spiritual Gathering", description: "Morning meditation session" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+2", title: "Bhajan Session", description: "Evening devotional songs" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+3", title: "Temple Visit", description: "Sacred temple pilgrimage" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+4", title: "Yoga Class", description: "Morning yoga practice" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+5", title: "Community Service", description: "Helping those in need" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+6", title: "Meditation Retreat", description: "Silent meditation practice" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+7", title: "Spiritual Discourse", description: "Enlightening teachings" },
+        { url: "https://via.placeholder.com/800x600/3c1a35/ffffff?text=Photo+8", title: "Festival Celebration", description: "Divine festival joy" }
       ];
 
-      let currentPhotoIndex = 0;
+      var currentPhotoIndex = 0;
 
       function openLightbox(index) {
         currentPhotoIndex = index;
-        const photo = photos[index];
+        var photo = photos[index];
         document.getElementById("lightbox-img").src = photo.url;
         document.getElementById("lightbox-img").alt = photo.title;
+        document.getElementById("lightboxTitle").textContent = photo.title;
+        document.getElementById("lightboxDesc").textContent = photo.description;
         document.getElementById("lightbox").style.display = "block";
         document.body.style.overflow = "hidden";
       }
@@ -460,137 +405,98 @@
       }
 
       function changePhoto(direction) {
-        currentPhotoIndex =
-          (currentPhotoIndex + direction + photos.length) % photos.length;
-        const photo = photos[currentPhotoIndex];
+        currentPhotoIndex = (currentPhotoIndex + direction + photos.length) % photos.length;
+        var photo = photos[currentPhotoIndex];
         document.getElementById("lightbox-img").src = photo.url;
         document.getElementById("lightbox-img").alt = photo.title;
+        document.getElementById("lightboxTitle").textContent = photo.title;
+        document.getElementById("lightboxDesc").textContent = photo.description;
       }
 
-      // Close lightbox when clicking outside the image
-      document
-        .getElementById("lightbox")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            closeLightbox();
-          }
-        });
+      document.getElementById("lightbox").addEventListener("click", function (e) {
+        if (e.target === this) { closeLightbox(); }
+      });
 
-      // Keyboard navigation
       document.addEventListener("keydown", function (e) {
         if (document.getElementById("lightbox").style.display === "block") {
-          if (e.key === "Escape") {
-            closeLightbox();
-          } else if (e.key === "ArrowLeft") {
-            changePhoto(-1);
-          } else if (e.key === "ArrowRight") {
-            changePhoto(1);
-          }
+          if (e.key === "Escape") { closeLightbox(); }
+          else if (e.key === "ArrowLeft") { changePhoto(-1); }
+          else if (e.key === "ArrowRight") { changePhoto(1); }
         }
       });
 
-      // Function to load photos from Cloudinary
-      async function loadPhotosFromCloudinary(pageToken = "") {
-        const grid = document.getElementById("galleryGrid");
+      // Touch device overlay support: tap to toggle overlay
+      document.querySelectorAll(".photo-card").forEach(function (card) {
+        card.addEventListener("click", function (e) {
+          if (window.innerWidth <= 768) return; // already always visible
+          var overlay = this.querySelector(".photo-overlay");
+          if (overlay && overlay.getBoundingClientRect().height > 0 && getComputedStyle(overlay).transform !== "none") {
+            var isVisible = this.classList.toggle("show-overlay");
+            if (isVisible) {
+              setTimeout(function () { this.classList.remove("show-overlay"); }.bind(this), 2000);
+            }
+          }
+        });
+      });
+
+      async function loadPhotosFromCloudinary(pageToken) {
+        pageToken = pageToken || "";
+        var grid = document.getElementById("galleryGrid");
 
         try {
-          // Show loading state
           grid.innerHTML = '<div class="loading">Loading photos...</div>';
 
-          const params = new URLSearchParams({
-            maxResults: 12,
-          });
+          var params = new URLSearchParams({ maxResults: 12 });
+          if (pageToken) { params.append("nextCursor", pageToken); }
 
-          if (pageToken) {
-            params.append("nextCursor", pageToken);
-          }
+          var response = await fetch("/api/photos?" + params.toString());
 
-          console.log("Fetching photos from:", `/api/photos?${params}`);
-          const response = await fetch(`/api/photos?${params}`);
+          if (!response.ok) { throw new Error("Failed to fetch photos"); }
 
-          console.log("Response status:", response.status);
+          var data = await response.json();
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch photos");
-          }
-
-          const data = await response.json();
-
-          console.log("Received data:", data);
-          console.log(
-            "Number of photos:",
-            data.photos ? data.photos.length : 0
-          );
-
-          // Clear loading state
           grid.innerHTML = "";
 
           if (data.photos && data.photos.length > 0) {
-            // Update global photos array for lightbox
-            photos.length = 0; // Clear existing photos
-            data.photos.forEach((photo, index) => {
-              photos.push({
-                url: photo.url,
-                title: photo.title,
-                description: photo.description,
-              });
+            photos.length = 0;
+            data.photos.forEach(function (photo, index) {
+              photos.push({ url: photo.url, title: photo.title, description: photo.description });
 
-              // Create photo card
-              const photoCard = document.createElement("div");
-              photoCard.className = "photo-card";
-              photoCard.onclick = () => openLightbox(index);
-              photoCard.innerHTML = `
-                <img src="${photo.thumbnail}" alt="${photo.title}" />
-                <div class="photo-overlay">
-                  <div class="photo-title">${photo.title}</div>
-                  <div class="photo-description">${photo.description}</div>
-                </div>
-              `;
-              grid.appendChild(photoCard);
+              var card = document.createElement("div");
+              card.className = "photo-card";
+              card.onclick = function () { openLightbox(index); };
+              card.innerHTML = '<img src="' + photo.thumbnail + '" alt="' + photo.title + '" />' +
+                '<div class="photo-overlay">' +
+                  '<div class="photo-title">' + photo.title + '</div>' +
+                  '<div class="photo-description">' + photo.description + '</div>' +
+                '</div>';
+              grid.appendChild(card);
             });
 
-            // Store next cursor for pagination
             window.nextPhotoCursor = data.nextCursor;
-
-            // Show/hide load more button
-            const loadMoreBtn = document.getElementById("loadMoreBtn");
-            if (loadMoreBtn) {
-              loadMoreBtn.style.display = data.nextCursor ? "block" : "none";
-            }
+            var loadBtn = document.getElementById("loadMoreBtn");
+            if (loadBtn) { loadBtn.style.display = data.nextCursor ? "inline-flex" : "none"; }
           } else {
-            grid.innerHTML =
-              '<div class="error-message">No photos found. Please check back later.</div>';
+            grid.innerHTML = '<div class="error-message">No photos found. Please check back later.</div>';
           }
         } catch (error) {
           console.error("Error loading photos:", error);
-          // Keep fallback content if API fails
-          grid.innerHTML = `
-            <div class="photo-card" onclick="openLightbox(0)">
-              <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+1" alt="Spiritual Gathering" />
-              <div class="photo-overlay">
-                <div class="photo-title">Spiritual Gathering</div>
-                <div class="photo-description">Morning meditation session</div>
-              </div>
-            </div>
-            <div class="photo-card" onclick="openLightbox(1)">
-              <img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+2" alt="Bhajan Session" />
-              <div class="photo-overlay">
-                <div class="photo-title">Bhajan Session</div>
-                <div class="photo-description">Evening devotional songs</div>
-              </div>
-            </div>
-          `;
+          grid.innerHTML = '';
+          for (var i = 0; i < 2; i++) {
+            var fallback = document.createElement("div");
+            fallback.className = "photo-card";
+            fallback.onclick = function (idx) { return function () { openLightbox(idx); }; }(i);
+            fallback.innerHTML = '<img src="https://via.placeholder.com/300x300/3c1a35/ffffff?text=Photo+' + (i + 1) + '" alt="Photo ' + (i + 1) + '" />' +
+              '<div class="photo-overlay"><div class="photo-title">Photo ' + (i + 1) + '</div><div class="photo-description">Description</div></div>';
+            grid.appendChild(fallback);
+          }
         }
       }
 
-      // Load more photos function
       function loadMorePhotos() {
-        if (window.nextPhotoCursor) {
-          loadPhotosFromCloudinary(window.nextPhotoCursor);
-        }
+        if (window.nextPhotoCursor) { loadPhotosFromCloudinary(window.nextPhotoCursor); }
       }
 
-      // Load photos when page loads
       loadPhotosFromCloudinary();
     </script>
   </body>
