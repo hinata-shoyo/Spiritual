@@ -1,5 +1,6 @@
 const express = require("express");
 const axios = require("axios");
+const https = require("https");
 const router = express.Router();
 
 // Public Google Drive folders containing the Swarn Dev Ji audio collection:
@@ -9,6 +10,14 @@ const DRIVE_FILES = require("../drive-audios.json");
 const DRIVE_URL_PREFIX = "https://drive.usercontent.google.com/download?id=";
 const BROWSER_UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+// Bound concurrent upstream connections so abandoned downloads release
+// sockets back to Drive instead of stacking up and tripping its per-IP throttle.
+const driveAgent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 8,
+  maxFreeSockets: 4,
+  timeout: 60000,
+});
 
 // Simple in-memory cache
 let cache = null;
@@ -106,29 +115,57 @@ function fetchAndProcessAudios() {
 router.get("/audio/:fileId", async (req, res) => {
   const { fileId } = req.params;
   const url = `${DRIVE_URL_PREFIX}${fileId}&export=download`;
+  let upstream = null;
+  const abortUpstream = () => {
+    if (upstream && upstream.data) {
+      try {
+        upstream.data.destroy();
+      } catch (e) {}
+    }
+  };
   try {
     const headers = { "User-Agent": BROWSER_UA };
     if (req.headers.range) {
       headers.Range = req.headers.range;
     }
-    const upstream = await axios.get(url, {
+    upstream = await axios.get(url, {
       responseType: "stream",
       timeout: 15000,
       maxRedirects: 0,
       headers,
+      httpAgent: driveAgent,
+      httpsAgent: driveAgent,
     });
     res.status(upstream.status);
+    res.setHeader("Cache-Control", "public, max-age=86400, immutable");
+    res.setHeader("Accept-Ranges", "bytes");
     if (upstream.headers["content-type"])
       res.setHeader("Content-Type", upstream.headers["content-type"]);
     if (upstream.headers["content-length"])
       res.setHeader("Content-Length", upstream.headers["content-length"]);
     if (upstream.headers["content-range"])
       res.setHeader("Content-Range", upstream.headers["content-range"]);
-    if (upstream.headers["accept-ranges"])
-      res.setHeader("Accept-Ranges", upstream.headers["accept-ranges"]);
+
+    // When the browser abandons the stream (pause, skip, close tab),
+    // destroy the upstream Drive fetch immediately so sockets are freed.
+    const onClose = () => {
+      req.removeListener("close", onClose);
+      abortUpstream();
+    };
+    req.on("close", onClose);
+
+    upstream.data.on("error", () => {
+      if (!res.headersSent) {
+        res.status(502).json({ success: false, error: "Stream interrupted" });
+      } else {
+        res.end();
+      }
+    });
+
     upstream.data.pipe(res);
   } catch (error) {
     console.error("Drive audio proxy error:", error.message);
+    abortUpstream();
     if (!res.headersSent) {
       res.status(502).json({ success: false, error: "Unable to stream audio from Drive" });
     } else {

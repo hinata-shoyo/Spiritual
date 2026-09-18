@@ -384,6 +384,13 @@
           }
 
           audio.addEventListener('play', showLoader);
+          audio.addEventListener('play', function () {
+            document.querySelectorAll('.audio-player').forEach(function (other) {
+              if (other !== audio && !other.paused) {
+                other.pause();
+              }
+            });
+          });
           audio.addEventListener('waiting', showLoader);
           audio.addEventListener('seeked', function () {
             if (audio.readyState < 3) showLoader();
