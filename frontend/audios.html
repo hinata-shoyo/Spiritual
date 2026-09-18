@@ -49,32 +49,53 @@
         width: 100%;
         margin-bottom: 12px;
         position: relative;
+        display: flex;
+        justify-content: center;
       }
 
-      .audio-player {
-        width: 100%;
-        height: 44px;
-        outline: none;
-        border-radius: var(--radius-sm);
+      .audio-play-btn {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        border-radius: var(--radius-full);
+        border: none;
+        background: var(--primary);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+        box-shadow: var(--shadow);
+      }
+
+      .audio-play-btn:hover {
+        background: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .audio-play-btn.playing {
+        background: var(--primary-light);
+      }
+
+      .icon-play-circle,
+      .icon-pause-circle {
+        display: inline-flex;
       }
 
       .audio-loading {
         display: none;
+        position: absolute;
+        inset: 0;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        position: absolute;
-        inset: 0;
-        z-index: 5;
-        background: rgba(255, 246, 239, 0.88);
         border-radius: var(--radius-sm);
       }
 
-      .audio-loading.show {
-        display: flex;
-      }
-
-      .audio-loading .spinner {
+      .spinner-ring {
         width: 16px;
         height: 16px;
         border: 3px solid var(--accent-light);
@@ -84,10 +105,99 @@
         flex-shrink: 0;
       }
 
-      .audio-loading-label {
+      /* Sticky player */
+      .sticky-audio-player {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: var(--primary-dark);
+        color: #fff;
+        padding: 10px 16px 12px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
+        row-gap: 8px;
+        column-gap: 12px;
+        align-items: center;
+        grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+        grid-template-areas:
+          "icon title time play close"
+          "seek seek seek seek seek";
+      }
+
+      .sticky-audio-player.visible {
+        display: grid;
+      }
+
+      .sticky-audio-player .sap-icon {
+        grid-area: icon;
+        display: inline-flex;
+        font-size: 1.1em;
+        opacity: 0.9;
+      }
+
+      .sticky-audio-player .sap-title {
+        grid-area: title;
+        font-size: 0.9em;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .sticky-audio-player audio {
+        display: none;
+      }
+
+      .sticky-audio-player .sap-seek {
+        grid-area: seek;
+        width: 100%;
+        margin: 0;
+        accent-color: var(--accent-light);
+        cursor: pointer;
+      }
+
+      .sticky-audio-player .sap-time {
+        grid-area: time;
         font-size: 0.78em;
-        font-weight: bold;
-        color: var(--primary);
+        opacity: 0.85;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .sticky-audio-player .sap-btn {
+        grid-area: play;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        border: none;
+        background: #fff;
+        color: var(--primary-dark);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: transform var(--transition);
+      }
+
+      .sticky-audio-player .sap-btn:hover {
+        transform: scale(1.08);
+      }
+
+      .sticky-audio-player .sap-close {
+        grid-area: close;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        font-size: 0.95em;
+        padding: 4px;
+      }
+
+      .sticky-audio-player .sap-close:hover {
+        color: #fff;
       }
 
       .audio-info {
@@ -181,7 +291,20 @@
 
       @media (max-width: 768px) {
         .audios-container {
-          padding: 20px 15px;
+          padding: 20px 15px 90px;
+        }
+
+        .sticky-audio-player {
+          padding: 8px 10px 10px;
+          column-gap: 10px;
+        }
+
+        .sticky-audio-player .sap-title {
+          font-size: 0.8em;
+        }
+
+        .sticky-audio-player .sap-time {
+          font-size: 0.7em;
         }
 
         .audios-grid {
@@ -285,6 +408,17 @@
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
       <span data-icon="arrow-up"></span>
     </button>
+
+    <div class="sticky-audio-player" id="stickyAudioPlayer" aria-hidden="true">
+      <audio id="stickyAudioEl" preload="none"></audio>
+      <span class="sap-icon" data-icon="headphones"></span>
+      <span class="sap-title" id="stickyAudioTitle"></span>
+      <span class="sap-time" id="stickyAudioTime">0:00 / 0:00</span>
+      <input type="range" class="sap-seek" id="stickySeek" min="0" max="1000" step="any" value="0" aria-label="Seek" onpointerdown="stickySeeking=true" onpointerup="stickySeeking=false" oninput="seekStickyAudio()" />
+      <button class="sap-btn" id="stickyPlayBtn" onclick="toggleStickyAudio()" aria-label="Play/pause"></button>
+      <button class="sap-close" onclick="closeStickyAudio()" aria-label="Close player"><span data-icon="x"></span></button>
+    </div>
+
     <script src="icons.js?v=2"></script>
     <script src="nav.js?v=2"></script>
     <script>
@@ -337,16 +471,12 @@
         }
 
         grid.innerHTML = pageAudios.map(function (audio) {
-          return '<div class="audio-card">' +
+          return '<div class="audio-card" data-id="' + audio.id + '">' +
             '<div class="audio-player-container">' +
-              '<audio class="audio-player" controls preload="none">' +
-                '<source src="' + audio.url + '" type="audio/mpeg">' +
-                'Your browser does not support the audio element.' +
-              '</audio>' +
-              '<div class="audio-loading" aria-hidden="true">' +
-                '<span class="spinner"></span>' +
-                '<span class="audio-loading-label" data-en="Preparing playback..." data-hi="ऑडियो तैयार हो रहा है...">Preparing playback...</span>' +
-              '</div>' +
+              '<button type="button" class="audio-play-btn" data-id="' + audio.id + '" aria-label="Play ' + audio.title.replace(/"/g, "&quot;") + '" onclick="loadStickyAudio(this)">' +
+                '<span class="icon-play-circle">' + window.iconSVG("play") + '</span>' +
+                '<span class="audio-loading" aria-hidden="true"><span class="spinner-ring"></span></span>' +
+              '</button>' +
             '</div>' +
             '<div class="audio-info">' +
               '<div class="audio-title">' + audio.title + '</div>' +
@@ -355,51 +485,161 @@
           '</div>';
         }).join("");
 
-        setLoaderTexts();
-        attachAudioEvents();
+        syncCardStates();
       }
 
-      function setLoaderTexts() {
-        var lang = 'en';
-        try {
-          lang = localStorage.getItem('gurujiLang') || 'en';
-        } catch (e) {}
-        document.querySelectorAll('.audio-loading-label').forEach(function (el) {
-          el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-hi');
+      /* ---- Sticky audio player ---- */
+      var stickyPlayer = document.getElementById("stickyAudioPlayer");
+      var stickyAudio = document.getElementById("stickyAudioEl");
+      var stickyTitle = document.getElementById("stickyAudioTitle");
+      var stickyTime = document.getElementById("stickyAudioTime");
+      var stickySeek = document.getElementById("stickySeek");
+      var stickySeeking = false;
+      var currentAudioId = null;
+      var isStickyPlaying = false;
+
+      function findAudioById(id) {
+        return allAudioFiles.filter(function (a) { return a.id === id; })[0];
+      }
+
+      function setPlayerVisible(visible) {
+        stickyPlayer.classList.toggle("visible", visible);
+        stickyPlayer.setAttribute("aria-hidden", visible ? "false" : "true");
+      }
+
+      function loadStickyAudio(btn) {
+        var id = btn.getAttribute("data-id");
+        var audio = findAudioById(id);
+        if (!audio) return;
+
+        if (currentAudioId === id && isStickyPlaying) {
+          stickyAudio.pause();
+          return;
+        }
+
+        if (currentAudioId === id) {
+          stickyAudio.play().catch(function () {});
+          return;
+        }
+
+        currentAudioId = id;
+        setCardState(id, "loading");
+        stickyAudio.src = audio.url;
+        stickyTitle.textContent = audio.title;
+        stickySeek.value = 0;
+        setPlayerVisible(true);
+        stickyAudio.play().catch(function () {
+          setCardState(id, "");
+          if (stickyAudio.error) {
+            stickyTitle.textContent = audio.title + " — " + (audio.error ? audio.error.message : "unavailable");
+          }
         });
       }
 
-      function attachAudioEvents() {
-        document.querySelectorAll('.audio-player').forEach(function (audio) {
-          if (audio.dataset.loaderBound === '1') return;
-          audio.dataset.loaderBound = '1';
-          var card = audio.closest('.audio-card');
-          var loader = card ? card.querySelector('.audio-loading') : null;
+      function toggleStickyAudio() {
+        if (stickyAudio.paused) {
+          stickyAudio.play().catch(function () {});
+        } else {
+          stickyAudio.pause();
+        }
+      }
 
-          function showLoader() {
-            if (loader) loader.classList.add('show');
-          }
-          function hideLoader() {
-            if (loader) loader.classList.remove('show');
-          }
+      function seekStickyAudio() {
+        if (isFinite(stickyAudio.duration)) {
+          stickyAudio.currentTime = (stickySeek.value / 1000) * stickyAudio.duration;
+        }
+        if (!stickyAudio.paused && stickyAudio.readyState < 3) {
+          stickyAudio.play().catch(function () {});
+        }
+      }
 
-          audio.addEventListener('play', showLoader);
-          audio.addEventListener('play', function () {
-            document.querySelectorAll('.audio-player').forEach(function (other) {
-              if (other !== audio && !other.paused) {
-                other.pause();
-              }
-            });
-          });
-          audio.addEventListener('waiting', showLoader);
-          audio.addEventListener('seeked', function () {
-            if (audio.readyState < 3) showLoader();
-          });
-          audio.addEventListener('playing', hideLoader);
-          audio.addEventListener('canplay', hideLoader);
-          audio.addEventListener('pause', hideLoader);
-          audio.addEventListener('error', hideLoader);
+      function closeStickyAudio() {
+        stickyAudio.pause();
+        currentAudioId = null;
+        isStickyPlaying = false;
+        stickySeek.value = 0;
+        setPlayerVisible(false);
+        document.querySelectorAll(".audio-card .audio-play-btn").forEach(function (b) {
+          setBtnState(b, false, false);
         });
+      }
+
+      function setCardState(id, state) {
+        var btn = document.querySelector('.audio-play-btn[data-id="' + id + '"]');
+        if (!btn) return;
+        setBtnState(btn, state === "playing", state === "loading");
+      }
+
+      function setBtnState(btn, playing, loading) {
+        var icon = btn.querySelector(".icon-play-circle");
+        var spin = btn.querySelector(".audio-loading");
+        if (icon) icon.innerHTML = window.iconSVG(playing ? "pause" : "play");
+        if (playing) btn.classList.add("playing");
+        else btn.classList.remove("playing");
+        if (spin) spin.style.display = loading ? "flex" : "none";
+      }
+
+      function syncCardStates() {
+        if (!currentAudioId) return;
+        setCardState(currentAudioId, isStickyPlaying ? "playing" : "");
+      }
+
+      stickyAudio.addEventListener("play", function () {
+        isStickyPlaying = true;
+        setStickyBtnPlay(true);
+        if (currentAudioId) setCardState(currentAudioId, "loading");
+      });
+      stickyAudio.addEventListener("waiting", function () {
+        if (currentAudioId) setCardState(currentAudioId, "loading");
+      });
+      stickyAudio.addEventListener("playing", function () {
+        isStickyPlaying = true;
+        setStickyBtnPlay(true);
+        if (currentAudioId) setCardState(currentAudioId, "playing");
+      });
+      stickyAudio.addEventListener("pause", function () {
+        isStickyPlaying = false;
+        setStickyBtnPlay(false);
+        syncCardStates();
+      });
+      stickyAudio.addEventListener("ended", function () {
+        currentAudioId = null;
+        isStickyPlaying = false;
+        stickySeek.value = 0;
+        setPlayerVisible(false);
+        document.querySelectorAll(".audio-card .audio-play-btn").forEach(function (b) {
+          setBtnState(b, false, false);
+        });
+      });
+      stickyAudio.addEventListener("error", function () {
+        isStickyPlaying = false;
+        setStickyBtnPlay(false);
+        if (currentAudioId) setCardState(currentAudioId, "");
+      });
+      stickyAudio.addEventListener("timeupdate", function () {
+        if (!stickySeeking && isFinite(stickyAudio.duration) && stickyAudio.duration > 0) {
+          stickySeek.value = (stickyAudio.currentTime / stickyAudio.duration) * 1000;
+        }
+        if (isFinite(stickyAudio.duration)) {
+          stickyTime.textContent = fmtTime(stickyAudio.currentTime) + " / " + fmtTime(stickyAudio.duration);
+        }
+      });
+
+      function setStickyBtnPlay(playing) {
+        var b = document.getElementById("stickyPlayBtn");
+        b.innerHTML = window.iconSVG(playing ? "pause" : "play");
+      }
+
+      function fmtTime(sec) {
+        if (!isFinite(sec) || sec < 0) sec = 0;
+        var m = Math.floor(sec / 60);
+        var s = Math.floor(sec % 60);
+        if (m >= 60) {
+          var h = Math.floor(m / 60);
+          m = m % 60;
+          return h + ":" + (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+        }
+        return m + ":" + (s < 10 ? "0" : "") + s;
       }
 
       function filterAudios() {
@@ -482,6 +722,8 @@
       function scrollToTop() {
         document.querySelector(".page-header").scrollIntoView({ behavior: "smooth" });
       }
+
+      setStickyBtnPlay(false);
 
       document.addEventListener("DOMContentLoaded", loadAudiosFromArchive);
     </script>
