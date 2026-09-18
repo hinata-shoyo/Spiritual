@@ -7,26 +7,48 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const url = `https://spiritual-0nip.onrender.com/`; // Replace with your Render URL
+const interval = 60000; // Interval in milliseconds (60 seconds)
+
+//Reloader Function
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      console.log(
+        `Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`,
+      );
+    })
+    .catch((error) => {
+      console.error(
+        `Error reloading at ${new Date().toISOString()}:`,
+        error.message,
+      );
+    });
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Serve static files from frontend directory with caching
-app.use(express.static(path.join(__dirname, "../frontend"), {
-  maxAge: '7d',
-  etag: true,
-  lastModified: true,
-  setHeaders: function (res, filePath) {
-    // HTML should always be revalidated so deploys are picked up immediately
-    if (filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-    }
-    // Code assets get a short cache; bump the ?v= query on change to bust it
-    else if (/\.(css|js)$/.test(filePath)) {
-      res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
-    }
-  }
-}));
+app.use(
+  express.static(path.join(__dirname, "../frontend"), {
+    maxAge: "7d",
+    etag: true,
+    lastModified: true,
+    setHeaders: function (res, filePath) {
+      // HTML should always be revalidated so deploys are picked up immediately
+      if (filePath.endsWith(".html")) {
+        res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+      }
+      // Code assets get a short cache; bump the ?v= query on change to bust it
+      else if (/\.(css|js)$/.test(filePath)) {
+        res.setHeader("Cache-Control", "public, max-age=3600, must-revalidate");
+      }
+    },
+  }),
+);
 
 // Import routes
 const youtubeRoutes = require("./routes/youtube");
@@ -98,3 +120,5 @@ app.listen(PORT, () => {
   console.log(`   GET /videos`);
   console.log(`   GET /gallery`);
 });
+
+setInterval(reloadWebsite, interval);
