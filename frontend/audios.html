@@ -48,6 +48,7 @@
       .audio-player-container {
         width: 100%;
         margin-bottom: 12px;
+        position: relative;
       }
 
       .audio-player {
@@ -55,6 +56,38 @@
         height: 44px;
         outline: none;
         border-radius: var(--radius-sm);
+      }
+
+      .audio-loading {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background: rgba(255, 246, 239, 0.88);
+        border-radius: var(--radius-sm);
+      }
+
+      .audio-loading.show {
+        display: flex;
+      }
+
+      .audio-loading .spinner {
+        width: 16px;
+        height: 16px;
+        border: 3px solid var(--accent-light);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        flex-shrink: 0;
+      }
+
+      .audio-loading-label {
+        font-size: 0.78em;
+        font-weight: bold;
+        color: var(--primary);
       }
 
       .audio-info {
@@ -310,6 +343,10 @@
                 '<source src="' + audio.url + '" type="audio/mpeg">' +
                 'Your browser does not support the audio element.' +
               '</audio>' +
+              '<div class="audio-loading" aria-hidden="true">' +
+                '<span class="spinner"></span>' +
+                '<span class="audio-loading-label" data-en="Preparing playback..." data-hi="ऑडियो तैयार हो रहा है...">Preparing playback...</span>' +
+              '</div>' +
             '</div>' +
             '<div class="audio-info">' +
               '<div class="audio-title">' + audio.title + '</div>' +
@@ -317,6 +354,45 @@
             '</div>' +
           '</div>';
         }).join("");
+
+        setLoaderTexts();
+        attachAudioEvents();
+      }
+
+      function setLoaderTexts() {
+        var lang = 'en';
+        try {
+          lang = localStorage.getItem('gurujiLang') || 'en';
+        } catch (e) {}
+        document.querySelectorAll('.audio-loading-label').forEach(function (el) {
+          el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-hi');
+        });
+      }
+
+      function attachAudioEvents() {
+        document.querySelectorAll('.audio-player').forEach(function (audio) {
+          if (audio.dataset.loaderBound === '1') return;
+          audio.dataset.loaderBound = '1';
+          var card = audio.closest('.audio-card');
+          var loader = card ? card.querySelector('.audio-loading') : null;
+
+          function showLoader() {
+            if (loader) loader.classList.add('show');
+          }
+          function hideLoader() {
+            if (loader) loader.classList.remove('show');
+          }
+
+          audio.addEventListener('play', showLoader);
+          audio.addEventListener('waiting', showLoader);
+          audio.addEventListener('seeked', function () {
+            if (audio.readyState < 3) showLoader();
+          });
+          audio.addEventListener('playing', hideLoader);
+          audio.addEventListener('canplay', hideLoader);
+          audio.addEventListener('pause', hideLoader);
+          audio.addEventListener('error', hideLoader);
+        });
       }
 
       function filterAudios() {

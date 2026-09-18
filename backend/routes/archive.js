@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const router = express.Router();
 
 // Public Google Drive folders containing the Swarn Dev Ji audio collection:
@@ -6,6 +7,8 @@ const router = express.Router();
 //   https://drive.google.com/drive/folders/1v-ttTuwMR8EtjGnX-1lomLi3_fspMY97
 const DRIVE_FILES = require("../drive-audios.json");
 const DRIVE_URL_PREFIX = "https://drive.usercontent.google.com/download?id=";
+const BROWSER_UA =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 
 // Simple in-memory cache
 let cache = null;
@@ -59,7 +62,7 @@ function fetchFromGoogleDrive() {
     const record = buildAudioRecord(file.name);
     return {
       ...record,
-      url: `${DRIVE_URL_PREFIX}${file.fileId}&export=view`,
+      url: `/api/archive/audio/${file.fileId}`,
       thumbnail: null,
       duration: 0,
       size: 0,
@@ -97,6 +100,44 @@ function fetchAndProcessAudios() {
 }
 
 /**
+ * Stream audio from Google Drive, passing Range requests through so
+ * the browser can seek.
+ */
+router.get("/audio/:fileId", async (req, res) => {
+  const { fileId } = req.params;
+  const url = `${DRIVE_URL_PREFIX}${fileId}&export=download`;
+  try {
+    const headers = { "User-Agent": BROWSER_UA };
+    if (req.headers.range) {
+      headers.Range = req.headers.range;
+    }
+    const upstream = await axios.get(url, {
+      responseType: "stream",
+      timeout: 15000,
+      maxRedirects: 0,
+      headers,
+    });
+    res.status(upstream.status);
+    if (upstream.headers["content-type"])
+      res.setHeader("Content-Type", upstream.headers["content-type"]);
+    if (upstream.headers["content-length"])
+      res.setHeader("Content-Length", upstream.headers["content-length"]);
+    if (upstream.headers["content-range"])
+      res.setHeader("Content-Range", upstream.headers["content-range"]);
+    if (upstream.headers["accept-ranges"])
+      res.setHeader("Accept-Ranges", upstream.headers["accept-ranges"]);
+    upstream.data.pipe(res);
+  } catch (error) {
+    console.error("Drive audio proxy error:", error.message);
+    if (!res.headersSent) {
+      res.status(502).json({ success: false, error: "Unable to stream audio from Drive" });
+    } else {
+      res.end();
+    }
+  }
+});
+
+/**
  * Get all audio files from the Google Drive folders
  */
 router.get("/audios", (req, res) => {
@@ -109,7 +150,13 @@ router.get("/audios", (req, res) => {
 router.get("/audios/:audioId", (req, res) => {
   const { audioId } = req.params;
   const data = fetchAndProcessAudios();
-  const audio = data.audios.find((a) => a.id === audioId);
+  const normalize = (s) =>
+    String(s).toLowerCase().replace(/\.mp3$/i, "").replace(/\s+/g, "");
+  const wanted = normalize(audioId);
+  const audio = data.audios.find((a) => {
+    const key = normalize(a.id);
+    return key === wanted || key.split("-")[0] === wanted;
+  });
 
   if (!audio) {
     return res.status(404).json({
