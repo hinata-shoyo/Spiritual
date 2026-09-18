@@ -222,7 +222,7 @@
 
       <div class="section-banner">
         <h3 data-en="Swarn Dev Ji Parvachans" data-hi="स्वर्ण देव जी के प्रवचन">Swarn Dev Ji Parvachans</h3>
-        <p data-en="Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available through Internet Archive" data-hi="करनाल के गुरु स्वर्ण देव जी के आध्यात्मिक प्रवचन और उपदेश, इंटरनेट आर्काइव के माध्यम से उपलब्ध">Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available through Internet Archive</p>
+        <p data-en="Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available on Google Drive" data-hi="करनाल के गुरु स्वर्ण देव जी के आध्यात्मिक प्रवचन और उपदेश, Google Drive के माध्यम से उपलब्ध">Spiritual discourses and sermons by Guru Swarn Dev Ji of Karnal, available on Google Drive</p>
       </div>
 
       <div class="search-wrapper">
@@ -323,13 +323,20 @@
         var searchTerm = document.getElementById("searchInput").value.toLowerCase().trim();
 
         filteredAudioFiles = allAudioFiles.filter(function (audio) {
-          var title = (audio.title || "").toLowerCase();
-          var description = (audio.description || "").toLowerCase();
-          var dateString = (audio.dateString || "").toLowerCase();
-          return searchTerm === "" ||
-            title.includes(searchTerm) ||
-            description.includes(searchTerm) ||
-            dateString.includes(searchTerm);
+          if (searchTerm === "") {
+            return true;
+          }
+
+          var haystack = (
+            (audio.id || "") + " " +
+            (audio.title || "") + " " +
+            (audio.description || "") + " " +
+            (audio.dateString || "")
+          ).toLowerCase();
+
+          return searchTerm.split(/\s+/).every(function (token) {
+            return haystack.includes(token);
+          });
         });
 
         currentPage = 0;
